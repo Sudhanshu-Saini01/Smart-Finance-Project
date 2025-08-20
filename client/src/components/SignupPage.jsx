@@ -1,14 +1,16 @@
-// client/src/components/SignupPage.jsx
+// client/src/components/SignupPage.jsx (CORRECTED)
 
 import React, { useState } from "react";
-import axios from "axios"; // Import axios
+import axios from "axios";
+import { Link } from "react-router-dom"; // 1. Import the Link component
 import "../Auth.css";
 
-const SignupPage = ({ onSwitchToLogin }) => {
+const SignupPage = () => {
+  // 2. Remove the 'onSwitchToLogin' prop
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(""); // To show a success message
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -67,9 +69,10 @@ const SignupPage = ({ onSwitchToLogin }) => {
         </button>
         <p className="switch-form-text">
           Already have an account?{" "}
-          <span onClick={onSwitchToLogin} className="switch-form-link">
+          {/* 3. Replace the span with a Link component */}
+          <Link to="/login" className="switch-form-link">
             Login
-          </span>
+          </Link>
         </p>
       </form>
     </div>

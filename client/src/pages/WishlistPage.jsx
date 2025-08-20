@@ -1,70 +1,56 @@
-// client/src/pages/WishlistPage.jsx (REPLACE THIS FILE'S CONTENT)
+// client/src/pages/WishlistPage.jsx (REFURBISHED)
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-// import { AuthContext } from "../context/AuthContext";
-import WishlistCard from "../components/WishlistCard"; // We will create this
-import "./WishlistPage.css"; // We will create this
+import { DataContext } from "../context/DataContext"; // 1. Import the DataContext
+import WishlistCard from "../components/WishlistCard";
+import "./WishlistPage.css";
 
 const WishlistPage = () => {
-  // const { user } = useContext(AuthContext);
-  const [wishlistItems, setWishlistItems] = useState([]);
-  const [summaryData, setSummaryData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  // 2. Get all data and functions from the central DataContext
+  const { wishlist, summary, loading, error, refetchData } =
+    useContext(DataContext);
 
-  // Form state for adding new items
+  // Local state is only needed for the form
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [category, setCategory] = useState("other");
-
-  const fetchData = async () => {
-    try {
-      const [wishlistRes, summaryRes] = await Promise.all([
-        axios.get("http://localhost:3001/api/wishlist"),
-        axios.get("http://localhost:3001/api/transactions/monthly-summary"),
-      ]);
-      setWishlistItems(wishlistRes.data);
-      setSummaryData(summaryRes.data);
-    } catch (err) {
-      setError("Failed to fetch data.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [formError, setFormError] = useState("");
 
   const handleAddItem = async (e) => {
     e.preventDefault();
+    setFormError("");
     if (!itemName || !itemPrice) {
-      setError("Please fill all fields.");
+      setFormError("Please fill all fields.");
       return;
     }
     try {
-      const res = await axios.post("http://localhost:3001/api/wishlist", {
+      await axios.post("http://localhost:3001/api/wishlist", {
         itemName,
         itemPrice: parseFloat(itemPrice),
         category,
       });
-      setWishlistItems([res.data, ...wishlistItems]);
+
+      // 3. Tell the central hub to refetch all data
+      refetchData();
+
       // Reset form
       setItemName("");
       setItemPrice("");
       setCategory("other");
     } catch (err) {
-      console.log(err);
-      setError("Failed to add item.");
+      setFormError("Failed to add item." + err);
     }
   };
 
-  const handleDeleteItem = (itemId) => {
-    setWishlistItems(wishlistItems.filter((item) => item._id !== itemId));
-    // Optionally, you can add a call to the delete API endpoint here
-    // axios.delete(`http://localhost:3001/api/wishlist/${itemId}`);
+  const handleDeleteItem = async (itemId) => {
+    try {
+      await axios.delete(`http://localhost:3001/api/wishlist/${itemId}`);
+      // 4. Refetch data after deleting to ensure everything is in sync
+      refetchData();
+    } catch (err) {
+      setFormError("Failed to delete item." + err);
+    }
   };
 
   if (loading) {
@@ -102,15 +88,16 @@ const WishlistPage = () => {
           </select>
           <button type="submit">Add Goal</button>
         </form>
+        {formError && <p className="error-message">{formError}</p>}
         {error && <p className="error-message">{error}</p>}
       </div>
 
       <div className="wishlist-grid">
-        {wishlistItems.map((item) => (
+        {wishlist.map((item) => (
           <WishlistCard
             key={item._id}
             item={item}
-            summary={summaryData}
+            summary={summary} // Pass the summary from the context
             onDelete={handleDeleteItem}
           />
         ))}

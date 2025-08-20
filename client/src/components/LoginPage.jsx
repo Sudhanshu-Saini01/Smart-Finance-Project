@@ -1,16 +1,17 @@
-// client/src/components/LoginPage.jsx (UPDATE THIS FILE)
+// client/src/components/LoginPage.jsx (CORRECTED)
 
-import React, { useState, useContext } from "react"; // Import useContext
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
+import { Link } from "react-router-dom"; // 1. Import the Link component
+import { AuthContext } from "../context/AuthContext";
 import "../Auth.css";
 
-const LoginPage = ({ onSwitchToSignup }) => {
+const LoginPage = () => {
+  // 2. Remove the 'onSwitchToSignup' prop
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Get the login function from our context
   const { login } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
@@ -25,8 +26,6 @@ const LoginPage = ({ onSwitchToSignup }) => {
           password,
         }
       );
-
-      // Use the login function from context to save the token
       login(response.data.token);
     } catch (err) {
       console.error(
@@ -68,9 +67,10 @@ const LoginPage = ({ onSwitchToSignup }) => {
         </button>
         <p className="switch-form-text">
           Don't have an account?{" "}
-          <span onClick={onSwitchToSignup} className="switch-form-link">
+          {/* 3. Replace the span with a Link component */}
+          <Link to="/signup" className="switch-form-link">
             Sign Up
-          </span>
+          </Link>
         </p>
       </form>
     </div>
