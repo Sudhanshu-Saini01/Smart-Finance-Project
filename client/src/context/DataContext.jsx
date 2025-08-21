@@ -1,24 +1,24 @@
 // client/src/context/DataContext.jsx
+// /----- VERSION V2 -----/
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
-// 1. Create the context
 const DataContext = createContext();
 
-// 2. Create the provider component
 const DataProvider = ({ children }) => {
   const { token } = useContext(AuthContext);
+  const [user, setUser] = useState(null);
   const [summary, setSummary] = useState(null);
   const [transactions, setTransactions] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
   const [goals, setGoals] = useState([]);
+  const [loans, setLoans] = useState([]);
+  const [investments, setInvestments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchData = async () => {
-    // Don't fetch if the user isn't logged in
     if (!token) {
       setLoading(false);
       return;
@@ -26,41 +26,54 @@ const DataProvider = ({ children }) => {
 
     setLoading(true);
     try {
-      // Fetch all financial data in parallel for efficiency
-      const [summaryRes, transRes, wishlistRes, goalsRes] = await Promise.all([
+      // This now fetches all V2 data in one go
+      const [
+        userRes,
+        summaryRes,
+        transRes,
+        goalsRes,
+        loansRes,
+        investmentsRes,
+      ] = await Promise.all([
+        axios.get("http://localhost:3001/api/users/profile"),
         axios.get("http://localhost:3001/api/transactions/monthly-summary"),
         axios.get("http://localhost:3001/api/transactions"),
-        axios.get("http://localhost:3001/api/wishlist"),
-        axios.get("http://localhost:3001/api/savings"),
+        axios.get("http://localhost:3001/api/goals"),
+        axios.get("http://localhost:3001/api/loans"),
+        axios.get("http://localhost:3001/api/investments"),
       ]);
 
+      setUser(userRes.data);
       setSummary(summaryRes.data);
       setTransactions(transRes.data);
-      setWishlist(wishlistRes.data);
       setGoals(goalsRes.data);
+      setLoans(loansRes.data);
+      setInvestments(investmentsRes.data);
       setError("");
     } catch (err) {
-      console.error("Failed to fetch data", err);
+      console.error("Failed to fetch V2 data", err);
       setError("Could not load financial data.");
     } finally {
       setLoading(false);
     }
   };
 
-  // This useEffect will run once when the user logs in (when the token appears)
   useEffect(() => {
-    fetchData();
+    if (token) {
+      fetchData();
+    }
   }, [token]);
 
-  // The value provided to all consuming components
   const contextValue = {
+    user,
     summary,
     transactions,
-    wishlist,
     goals,
+    loans,
+    investments,
     loading,
     error,
-    refetchData: fetchData, // Provide the function to refetch all data
+    refetchData: fetchData,
   };
 
   return (
@@ -69,3 +82,4 @@ const DataProvider = ({ children }) => {
 };
 
 export { DataContext, DataProvider };
+// /----- END VERSION V2 -----/

@@ -1,0 +1,58 @@
+/* client/src/components/WelcomeKit.css (NEW FILE) */
+/* /----- VERSION V2 -----/ */
+
+.welcome-kit-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+}
+
+.welcome-kit-content h1 {
+  font-size: 36px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.welcome-kit-content p {
+  font-size: 18px;
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto 30px auto;
+}
+
+.welcome-kit-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.welcome-kit-button {
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.welcome-kit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-kit-button.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.welcome-kit-button.secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+}
+/* /----- END VERSION V2 -----/ */

@@ -2,18 +2,21 @@
 
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs"); // For hashing passwords
-const jwt = require("jsonwebtoken"); // For creating tokens
-const User = require("../models/User"); // Import our User model
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const auth = require("../middleware/authMiddleware");
 
-// --- SIGNUP ROUTE (NOW WITH HASHING) ---
+// @route   POST /api/users/signup
+// @desc    Register a new user
+// @access  Public
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ message: "Please provide both email and password." });
+        .json({ message: "Please provide name, email, and password." });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -22,13 +25,13 @@ router.post("/signup", async (req, res) => {
         .json({ message: "User with this email already exists." });
     }
 
-    // Hash the password before saving
-    const salt = await bcrypt.genSalt(10); // Generate a "salt" for hashing
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
+      name,
       email,
-      password: hashedPassword, // Save the hashed password, not the original
+      password: hashedPassword,
     });
 
     await newUser.save();
@@ -41,7 +44,9 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// --- LOGIN ROUTE (NOW WITH HASHING CHECK & JWT) ---
+// @route   POST /api/users/login
+// @desc    Authenticate user & get token
+// @access  Public
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -56,28 +61,19 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    // Compare the provided password with the hashed password in the database
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    // If passwords match, create a JWT
-    const payload = {
-      user: {
-        id: user.id, // We'll use the user's database ID in the token
-      },
-    };
+    const payload = { user: { id: user.id } };
 
-    // Sign the token with a secret key
-    // This secret should be in your .env file in a real app!
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || "a_super_secret_key_for_now", // Fallback secret
+      process.env.JWT_SECRET || "a_super_secret_key_for_now",
       { expiresIn: "1h" }, // Token expires in 1 hour
       (err, token) => {
         if (err) throw err;
-        // Send the token back to the user
         res.status(200).json({ message: "Login successful!", token: token });
       }
     );
@@ -87,15 +83,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// --- PROTECTED ROUTE EXAMPLE ---
-// We add our auth middleware as the second argument.
-// It will run BEFORE the main route logic.
-const auth = require("../middleware/authMiddleware");
-
+// @route   GET /api/users/profile
+// @desc    Get user data
+// @access  Private
 router.get("/profile", auth, async (req, res) => {
   try {
-    // Because our middleware ran, req.user is now available.
-    // We can get the user's data from the database without the password.
+    // This route fetches the user's complete profile, including their unallocated funds
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (err) {

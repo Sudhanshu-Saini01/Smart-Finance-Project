@@ -1,4 +1,5 @@
-/* client/src/components/Navbar.css (NEW FILE) */
+/* client/src/components/Navbar.css */
+/* /----- VERSION V2 -----/ */
 
 .navbar {
   display: flex;
@@ -8,6 +9,11 @@
   padding: 0 40px;
   height: 70px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
 }
 
 .navbar-brand a {
@@ -25,7 +31,11 @@
   padding: 0;
 }
 
+/* Updated styles for links with icons */
 .navbar-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between icon and text */
   text-decoration: none;
   color: #555;
   font-weight: 500;
@@ -38,7 +48,6 @@
   color: #007bff;
 }
 
-/* Style for the active link */
 .navbar-links a.active {
   color: #007bff;
   font-weight: bold;
@@ -56,6 +65,9 @@
 }
 
 .navbar-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 16px;
   border: 1px solid #dc3545;
   background-color: transparent;
@@ -70,3 +82,4 @@
   background-color: #dc3545;
   color: #fff;
 }
+/* /----- END VERSION V2 -----/ */

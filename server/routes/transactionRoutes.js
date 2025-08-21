@@ -4,16 +4,57 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/authMiddleware");
 const Transaction = require("../models/Transaction");
+const User = require("../models/User");
 
-// --- (NEW) DYNAMIC MONTHLY SUMMARY ROUTE ---
-// This replaces the old /summary route.
-// @route   GET /api/transactions/monthly-summary
-// @desc    Get detailed financial summaries for the current and previous months
+// /----- VERSION V2 -----/
+// @route   POST /api/transactions
+// @desc    Add a new transaction and handle income/savings/investment allocation
 // @access  Private
+router.post("/", auth, async (req, res) => {
+  try {
+    const { description, amount, type, category, date } = req.body;
+    const user = await User.findById(req.user.id);
+    const transactionAmount = parseFloat(amount);
+
+    const newTransaction = new Transaction({
+      user: user._id,
+      description,
+      amount: transactionAmount,
+      type,
+      category,
+      date,
+    });
+    await newTransaction.save();
+
+    // Handle allocation to money pools
+    if (type === "income") {
+      const { allocations } = user;
+      const savingsAmount = transactionAmount * (allocations.savings / 100);
+      const investmentAmount =
+        transactionAmount * (allocations.investment / 100);
+
+      user.unallocatedSavings += savingsAmount;
+      user.unallocatedInvestments += investmentAmount;
+    } else if (type === "savings") {
+      user.unallocatedSavings += transactionAmount;
+    } else if (type === "investment") {
+      user.unallocatedInvestments += transactionAmount;
+    }
+    await user.save();
+
+    res.status(201).json(newTransaction);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+// /----- END VERSION V2 -----/
+
+// --- DYNAMIC MONTHLY SUMMARY ROUTE ---
+// This route now correctly calculates savings/investments based on transactions within the month
 router.get("/monthly-summary", auth, async (req, res) => {
   try {
     const now = new Date();
-    // Define date ranges
     const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfCurrentMonth = new Date(
       now.getFullYear(),
@@ -39,42 +80,27 @@ router.get("/monthly-summary", auth, async (req, res) => {
       999
     );
 
-    // Helper function to process transactions for a given period
     const processTransactions = (transactions) => {
-      let totalIncome = 0;
-      let totalExpense = 0;
-      let totalSavings = 0;
-      let totalInvestments = 0;
-      let lastIncomeDate = null;
-      let lastExpenseDate = null;
-
-      // Define categories that count towards savings/investments
-      const savingsCategories = ["savings", "emergency fund"];
-      const investmentCategories = [
-        "investment",
-        "stocks",
-        "sip",
-        "mutual fund",
-      ];
+      let totalIncome = 0,
+        totalExpense = 0,
+        totalSavings = 0,
+        totalInvestments = 0;
+      let lastIncomeDate = null,
+        lastExpenseDate = null;
 
       for (const t of transactions) {
         if (t.type === "income") {
           totalIncome += t.amount;
-          if (!lastIncomeDate || t.date > lastIncomeDate) {
+          if (!lastIncomeDate || t.date > lastIncomeDate)
             lastIncomeDate = t.date;
-          }
         } else if (t.type === "expense") {
-          const categoryLower = t.category.toLowerCase();
-          if (savingsCategories.includes(categoryLower)) {
-            totalSavings += t.amount;
-          } else if (investmentCategories.includes(categoryLower)) {
-            totalInvestments += t.amount;
-          } else {
-            totalExpense += t.amount;
-          }
-          if (!lastExpenseDate || t.date > lastExpenseDate) {
+          totalExpense += t.amount;
+          if (!lastExpenseDate || t.date > lastExpenseDate)
             lastExpenseDate = t.date;
-          }
+        } else if (t.type === "savings") {
+          totalSavings += t.amount;
+        } else if (t.type === "investment") {
+          totalInvestments += t.amount;
         }
       }
       return {
@@ -87,7 +113,6 @@ router.get("/monthly-summary", auth, async (req, res) => {
       };
     };
 
-    // Fetch transactions for both months
     const currentMonthTxs = await Transaction.find({
       user: req.user.id,
       date: { $gte: startOfCurrentMonth, $lte: endOfCurrentMonth },
@@ -97,7 +122,6 @@ router.get("/monthly-summary", auth, async (req, res) => {
       date: { $gte: startOfPreviousMonth, $lte: endOfPreviousMonth },
     });
 
-    // Process both sets of transactions
     const currentMonthData = processTransactions(currentMonthTxs);
     const previousMonthData = processTransactions(previousMonthTxs);
 
@@ -115,28 +139,6 @@ router.get("/monthly-summary", auth, async (req, res) => {
         ...previousMonthData,
       },
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// --- ROUTE TO ADD A NEW TRANSACTION ---
-// We need to update this to accept the new fields
-router.post("/", auth, async (req, res) => {
-  try {
-    const { description, amount, type, category, occurrence, date } = req.body;
-    const newTransaction = new Transaction({
-      user: req.user.id,
-      description,
-      amount,
-      type,
-      category,
-      occurrence,
-      date: date ? new Date(date) : new Date(), // Allow user to specify a date
-    });
-    const transaction = await newTransaction.save();
-    res.status(201).json(transaction);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

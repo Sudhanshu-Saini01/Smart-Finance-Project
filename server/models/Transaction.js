@@ -19,19 +19,20 @@ const transactionSchema = new Schema(
       type: Number,
       required: true,
     },
+    // /----- VERSION V2 -----/
+    // The 'type' field is now more comprehensive.
     type: {
       type: String,
       required: true,
-      enum: ["income", "expense"],
+      enum: ["income", "expense", "savings", "investment"],
     },
-    // NEW FIELD: Category
+    // /----- END VERSION V2 -----/
     category: {
       type: String,
       required: true,
       trim: true,
-      default: "Other", // A sensible default
+      default: "Other",
     },
-    // NEW FIELD: Occurrence
     occurrence: {
       type: String,
       enum: ["one-time", "monthly", "weekly"],

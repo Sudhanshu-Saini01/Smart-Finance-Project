@@ -1,0 +1,73 @@
+/* client/src/pages/GoalsPage.css (NEW FILE) */
+/* /----- VERSION V2 -----/ */
+
+.goals-page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.goals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.goals-header h1 {
+  font-size: 32px;
+  color: #333;
+}
+
+.total-saved-display {
+  background: #e9f5ff;
+  color: #004085;
+  padding: 15px 25px;
+  border-radius: 8px;
+  text-align: right;
+}
+
+.total-saved-display span {
+  display: block;
+  font-size: 14px;
+}
+
+.total-saved-display strong {
+  display: block;
+  font-size: 24px;
+}
+
+.goals-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.goals-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 30px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 10px;
+  background-color: #fafafa;
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+/* /----- END VERSION V2 -----/ */
