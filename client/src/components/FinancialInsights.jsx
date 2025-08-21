@@ -1,80 +1,68 @@
-// client/src/components/FinancialInsights.jsx
+// client/src/components/FinancialInsights.jsx (LOCALIZED)
 
 import React from "react";
-import "./FinancialInsights.css"; // We will create this next
+import "./FinancialInsights.css";
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(amount);
+};
 
 const FinancialInsights = ({ summary }) => {
   const insights = [];
 
-  // This is where the "advisor" logic lives.
   if (summary && summary.currentMonth && summary.previousMonth) {
     const current = summary.currentMonth;
     const previous = summary.previousMonth;
 
-    // Insight 1: Compare total spending
-    const totalCurrentSpending =
-      current.totalExpense + current.totalSavings + current.totalInvestments;
-    const totalPreviousSpending =
-      previous.totalExpense + previous.totalSavings + previous.totalInvestments;
+    const totalCurrentSpending = current.totalExpense;
+    const totalPreviousSpending = previous.totalExpense;
     if (totalCurrentSpending > totalPreviousSpending) {
       insights.push({
         type: "warning",
-        text: `Your spending is up by $${(
+        text: `Your spending is up by ${formatCurrency(
           totalCurrentSpending - totalPreviousSpending
-        ).toFixed(2)} compared to last month. Keep an eye on your budget.`,
-      });
-    } else if (totalCurrentSpending < totalPreviousSpending) {
-      insights.push({
-        type: "success",
-        text: `Great job! You spent $${(
-          totalPreviousSpending - totalCurrentSpending
-        ).toFixed(2)} less than last month.`,
+        )} compared to last month. Review your expenses.`,
       });
     }
 
-    // Insight 2: Savings check
-    if (
-      current.totalSavings > 0 &&
-      current.totalSavings > previous.totalSavings
-    ) {
+    if (current.totalSavings > 0) {
       insights.push({
         type: "success",
-        text: `Excellent! You've increased your savings by $${(
-          current.totalSavings - previous.totalSavings
-        ).toFixed(2)} this month.`,
+        text: `You've allocated ${formatCurrency(
+          current.totalSavings
+        )} to savings this month. Keep it up!`,
       });
     }
 
-    // Insight 3: Investment check
     if (current.totalInvestments > 0) {
       insights.push({
         type: "info",
-        text: `You invested $${current.totalInvestments.toFixed(
-          2
-        )} this month. Consistent investing is key to long-term growth.`,
+        text: `You've allocated ${formatCurrency(
+          current.totalInvestments
+        )} for investments. Consider a monthly SIP for consistent growth.`,
       });
-    } else if (current.totalIncome > 3000) {
+    } else if (current.totalIncome > 30000) {
       insights.push({
         type: "suggestion",
-        text: "You're not currently investing. Consider starting a small monthly investment (SIP) to grow your wealth.",
+        text: "You're not currently investing. Explore options like Mutual Funds or PPF to grow your wealth.",
       });
     }
 
-    // Insight 4: Surplus check
     const balance = current.totalIncome - totalCurrentSpending;
-    if (balance > 500) {
+    if (balance > 5000) {
       insights.push({
         type: "suggestion",
-        text: `You have a surplus of $${balance.toFixed(
-          2
-        )}. This is a great opportunity to add to your savings or make an investment.`,
+        text: `You have a monthly surplus of ${formatCurrency(
+          balance
+        )}. This is a great opportunity to increase your savings or investments.`,
       });
     }
   }
 
-  if (insights.length === 0) {
-    return null; // Don't show the component if there's no advice to give
-  }
+  if (insights.length === 0) return null;
 
   return (
     <div className="insights-container">

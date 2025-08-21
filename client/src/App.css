@@ -24,3 +24,56 @@ body {
   height: 100vh;
   font-size: 24px;
 }
+
+/* ... existing styles ... */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.main-content-area {
+  flex-grow: 1;
+}
+
+.persistent-status-cards {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  gap: 30px;
+  padding: 30px 40px 0 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* /----- VERSION V2 -----/ */
+
+/* ... existing styles ... */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.main-content-area {
+  flex-grow: 1;
+  padding-top: 70px; /* Space for the sticky navbar */
+}
+
+.persistent-status-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 30px 40px 0 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* .page-content {
+  /* This ensures the page content doesn't overlap weirdly */
+/* } */
+/* /----- END VERSION V2 -----/ */

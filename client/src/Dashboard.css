@@ -272,3 +272,14 @@
   max-width: 800px;
   margin: 0 auto;
 }
+
+/* NEW: Styles for card emphasis */
+.current-month-card {
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+.previous-month-card {
+  opacity: 0.85;
+  transform: scale(0.97);
+}

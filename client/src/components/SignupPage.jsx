@@ -7,6 +7,7 @@ import "../Auth.css";
 
 const SignupPage = () => {
   // 2. Remove the 'onSwitchToLogin' prop
+  const [name, setName] = useState(""); // New state for the name
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,6 +22,7 @@ const SignupPage = () => {
       const response = await axios.post(
         "http://localhost:3001/api/users/signup",
         {
+          name,
           email,
           password,
         }
@@ -44,6 +46,18 @@ const SignupPage = () => {
         <p>Get started with your smart finance manager.</p>
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
+
+        <div className="input-group">
+          <label htmlFor="signup-name">Full Name</label>
+          <input
+            id="signup-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
         <div className="input-group">
           <label htmlFor="signup-email">Email</label>
           <input

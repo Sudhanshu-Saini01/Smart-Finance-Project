@@ -1,0 +1,57 @@
+/* client/src/components/TransactionForm.css */
+
+.compact-transaction-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr auto;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.compact-transaction-form .form-group {
+  margin-bottom: 0;
+}
+
+.compact-transaction-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+.compact-transaction-form input,
+.compact-transaction-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.compact-transaction-form .submit-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  height: 41px; /* Align with form fields */
+}
+
+.full-width {
+  grid-column: 1 / -1; /* Make error span full width */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .compact-transaction-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .compact-transaction-form .submit-btn {
+    grid-column: 1 / -1;
+  }
+}

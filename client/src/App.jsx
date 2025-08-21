@@ -1,4 +1,5 @@
-// client/src/App.jsx (MAJOR UPDATE)
+// client/src/App.jsx (UPDATED)
+// /----- VERSION V2 -----/
 
 import React, { useContext } from "react";
 import {
@@ -8,84 +9,119 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
+import { DataContext } from "./context/DataContext";
 import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
-import DashboardPage from "./pages/DashboardPage"; // Note the new path
+import DashboardPage from "./pages/DashboardPage";
 import TransactionsPage from "./pages/TransactionsPage";
-import WishlistPage from "./pages/WishlistPage";
-import SavingsPage from "./pages/SavingsPage";
+import GoalsPage from "./pages/GoalsPage";
+import SavingsAndInvestmentsPage from "./pages/SavingsAndInvestmentsPage";
+import LoansPage from "./pages/LoansPage";
 import Navbar from "./components/Navbar";
+import MonthlyStatusCard from "./components/MonthlyStatusCard";
 import "./App.css";
 
-// A special component to protect routes that require a login
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   return token ? children : <Navigate to="/login" />;
 };
 
 function App() {
-  const { token, isLoading } = useContext(AuthContext);
-  // const [showLogin, setShowLogin] = React.useState(true);
+  const { token, isLoading: authLoading } = useContext(AuthContext);
+  const { user, summary, loading: dataLoading } = useContext(DataContext);
 
-  if (isLoading) {
-    return <div className="loading-fullscreen">Loading...</div>;
+  // if (authLoading) {
+  //   return <div className="loading-fullscreen">Authenticating...</div>;
+  // }
+
+  // /----- VERSION V2.1 -----/
+  // This is the new, more robust loading check.
+  // It waits for both authentication and the core user data to be ready.
+  if (authLoading || (token && dataLoading)) {
+    return <div className="loading-fullscreen">Loading Your Financials...</div>;
   }
+  // /----- END VERSION V2.1 -----/
 
   return (
     <Router>
-      {token && <Navbar />} {/* Show Navbar only when logged in */}
-      <div className="main-content">
-        <Routes>
-          {/* Public Routes */}
-          <Route
-            path="/login"
-            element={!token ? <LoginPage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!token ? <SignupPage /> : <Navigate to="/" />}
-          />
-
-          {/* Private Routes */}
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <DashboardPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/transactions"
-            element={
-              <PrivateRoute>
-                <TransactionsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/wishlist"
-            element={
-              <PrivateRoute>
-                <WishlistPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/savings"
-            element={
-              <PrivateRoute>
-                <SavingsPage />
-              </PrivateRoute>
-            }
-          />
-
-          {/* Fallback Route */}
-          <Route path="*" element={<Navigate to={token ? "/" : "/login"} />} />
-        </Routes>
+      <div className="app-container">
+        {token && <Navbar />}
+        <main className="main-content-area">
+          {token && !dataLoading && (
+            <div className="persistent-status-cards">
+              <MonthlyStatusCard
+                data={summary?.currentMonth}
+                user={user}
+                className="current-month-card"
+              />
+              <MonthlyStatusCard
+                data={summary?.previousMonth}
+                user={user}
+                className="previous-month-card"
+              />
+            </div>
+          )}
+          <div className="page-content">
+            <Routes>
+              <Route
+                path="/login"
+                element={!token ? <LoginPage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/signup"
+                element={!token ? <SignupPage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <DashboardPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/transactions"
+                element={
+                  <PrivateRoute>
+                    <TransactionsPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/goals"
+                element={
+                  <PrivateRoute>
+                    <GoalsPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/investments"
+                element={
+                  <PrivateRoute>
+                    <SavingsAndInvestmentsPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/loans"
+                element={
+                  <PrivateRoute>
+                    <LoansPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="*"
+                element={<Navigate to={token ? "/" : "/login"} />}
+              />
+            </Routes>
+          </div>
+        </main>
       </div>
     </Router>
   );
 }
 
 export default App;
+// /----- END VERSION V2 -----/

@@ -5,15 +5,16 @@ const router = express.Router();
 const bcrypt = require("bcryptjs"); // For hashing passwords
 const jwt = require("jsonwebtoken"); // For creating tokens
 const User = require("../models/User"); // Import our User model
+const auth = require("../middleware/authMiddleware");
 
 // --- SIGNUP ROUTE (NOW WITH HASHING) ---
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ message: "Please provide both email and password." });
+        .json({ message: "Please provide name, email and password." });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -27,6 +28,7 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
+      name,
       email,
       password: hashedPassword, // Save the hashed password, not the original
     });
@@ -90,7 +92,7 @@ router.post("/login", async (req, res) => {
 // --- PROTECTED ROUTE EXAMPLE ---
 // We add our auth middleware as the second argument.
 // It will run BEFORE the main route logic.
-const auth = require("../middleware/authMiddleware");
+// const auth = require("../middleware/authMiddleware");
 
 router.get("/profile", auth, async (req, res) => {
   try {

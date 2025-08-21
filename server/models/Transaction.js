@@ -19,11 +19,16 @@ const transactionSchema = new Schema(
       type: Number,
       required: true,
     },
+
+    // /----- VERSION V2 -----/
+    // The 'type' field is now more comprehensive.
     type: {
       type: String,
       required: true,
-      enum: ["income", "expense"],
+      enum: ["income", "expense", "savings", "investment"],
     },
+    // /----- END VERSION V2 -----/
+
     // NEW FIELD: Category
     category: {
       type: String,

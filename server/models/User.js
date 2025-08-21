@@ -10,17 +10,40 @@ const Schema = mongoose.Schema;
 // It specifies the fields, their types, and any rules (like being required or unique).
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
-      required: true, // An email is mandatory
-      unique: true, // Every email must be unique in the database
-      trim: true, // Removes any extra whitespace from the start and end
-      lowercase: true, // Stores the email in lowercase to avoid case-sensitivity issues
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
     },
     password: {
       type: String,
-      required: true, // A password is mandatory
+      required: true,
     },
+
+    // NEW FIELD: To store user's financial allocation strategy
+    allocations: {
+      expense: { type: Number, default: 70 },
+      savings: { type: Number, default: 20 },
+      investment: { type: Number, default: 10 },
+    },
+    // /----- VERSION V2 -----/
+    // These fields will act as the user's main pools of available funds.
+    unallocatedSavings: {
+      type: Number,
+      default: 0,
+    },
+    unallocatedInvestments: {
+      type: Number,
+      default: 0,
+    },
+    // /----- END VERSION V2 -----/
   },
   {
     // --- 3. ADD TIMESTAMPS ---

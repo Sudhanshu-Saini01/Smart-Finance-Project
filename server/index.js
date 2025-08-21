@@ -7,8 +7,17 @@ const cors = require("cors"); // Import the cors package
 require("dotenv").config();
 const userRoutes = require("./routes/userRoutes");
 const transactionRoutes = require("./routes/transactionRoutes"); // Import transaction routes
-const wishlistRoutes = require("./routes/wishlistRoutes"); // Import wishlist routes
-const savingsRoutes = require("./routes/savingsRoutes"); // Import savings routes
+
+//----- START: REMOVED FROM VERSION V2 -----/
+// const wishlistRoutes = require("./routes/wishlistRoutes"); // Import wishlist routes
+// const savingsRoutes = require("./routes/savingsRoutes"); // Import savings routes
+//----- END: REMOVED FROM VERSION V2 -----/
+
+//----- START: VERSION V2 -----//
+const goalRoutes = require("./routes/goalRoutes"); // NEW: Import goal routes
+const loanRoutes = require("./routes/loanRoutes"); // NEW: Import loan routes
+const investmentRoutes = require("./routes/investmentRoutes"); // NEW
+//----- END: VERSION V2 -----//
 
 // --- 2. INITIALIZE THE APP ---
 const app = express();
@@ -28,8 +37,17 @@ mongoose
 // --- 5. ROUTES ---
 app.use("/api/users", userRoutes);
 app.use("/api/transactions", transactionRoutes); // Use transaction routes
-app.use("/api/wishlist", wishlistRoutes); // Use wishlist routes
-app.use("/api/savings", savingsRoutes); // Use savings routes
+
+//----- START: REMOVED FROM VERSION V2 -----/
+// app.use("/api/wishlist", wishlistRoutes); // Use wishlist routes
+// app.use("/api/savings", savingsRoutes); // Use savings routes
+//----- END: REMOVED FROM VERSION V2 -----/
+
+//----- START: VERSION V2 -----//
+app.use("/api/goals", goalRoutes); // NEW: Use goal routes
+app.use("/api/loans", loanRoutes); // NEW: Use loan routes
+app.use("/api/investments", investmentRoutes); // NEW
+//----- END: VERSION V2 -----//
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Smart Finance Manager API! 🚀" });

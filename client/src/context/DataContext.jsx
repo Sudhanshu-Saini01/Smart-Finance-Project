@@ -1,24 +1,22 @@
 // client/src/context/DataContext.jsx
+//======= VERSION V2 =======//
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
-// 1. Create the context
 const DataContext = createContext();
 
-// 2. Create the provider component
 const DataProvider = ({ children }) => {
   const { token } = useContext(AuthContext);
   const [summary, setSummary] = useState(null);
   const [transactions, setTransactions] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
-  const [goals, setGoals] = useState([]);
+  const [goals, setGoals] = useState([]); // NEW: Replaces wishlist and savings
+  const [loans, setLoans] = useState([]); // NEW: For loan management
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchData = async () => {
-    // Don't fetch if the user isn't logged in
     if (!token) {
       setLoading(false);
       return;
@@ -26,18 +24,17 @@ const DataProvider = ({ children }) => {
 
     setLoading(true);
     try {
-      // Fetch all financial data in parallel for efficiency
-      const [summaryRes, transRes, wishlistRes, goalsRes] = await Promise.all([
+      const [summaryRes, transRes, goalsRes, loansRes] = await Promise.all([
         axios.get("http://localhost:3001/api/transactions/monthly-summary"),
         axios.get("http://localhost:3001/api/transactions"),
-        axios.get("http://localhost:3001/api/wishlist"),
-        axios.get("http://localhost:3001/api/savings"),
+        axios.get("http://localhost:3001/api/goals"), // NEW API call
+        axios.get("http://localhost:3001/api/loans"), // NEW API call
       ]);
 
       setSummary(summaryRes.data);
       setTransactions(transRes.data);
-      setWishlist(wishlistRes.data);
       setGoals(goalsRes.data);
+      setLoans(loansRes.data);
       setError("");
     } catch (err) {
       console.error("Failed to fetch data", err);
@@ -47,20 +44,18 @@ const DataProvider = ({ children }) => {
     }
   };
 
-  // This useEffect will run once when the user logs in (when the token appears)
   useEffect(() => {
     fetchData();
   }, [token]);
 
-  // The value provided to all consuming components
   const contextValue = {
     summary,
     transactions,
-    wishlist,
     goals,
+    loans,
     loading,
     error,
-    refetchData: fetchData, // Provide the function to refetch all data
+    refetchData: fetchData,
   };
 
   return (

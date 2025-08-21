@@ -1,0 +1,102 @@
+/* client/src/pages/SavingsAndInvestmentsPage.css */
+
+.si-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.si-page-container h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.si-pools-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.si-pool-card {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.si-pool-card span {
+  display: block;
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.si-pool-card strong {
+  display: block;
+  font-size: 28px;
+  color: #343a40;
+  margin-top: 5px;
+}
+
+.si-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.si-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.si-section p {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.si-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 15px;
+  align-items: center;
+}
+
+.si-form input,
+.si-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.si-form button {
+  padding: 12px 25px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.investments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.investment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.investment-item strong {
+  font-size: 18px;
+}

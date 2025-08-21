@@ -20,12 +20,23 @@ const Navbar = () => {
         <li>
           <NavLink to="/transactions">Transactions</NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/wishlist">Wishlist</NavLink>
         </li>
         <li>
           <NavLink to="/savings">Savings</NavLink>
+        </li> */}
+        <li>
+          <NavLink to="/goals">Goals</NavLink>
+        </li>{" "}
+        {/* NEW: Unified Goals link */}
+        <li>
+          <NavLink to="/investments">Savings & Investments</NavLink>
         </li>
+        <li>
+          <NavLink to="/loans">Loans</NavLink>
+        </li>{" "}
+        {/* NEW: Loans link */}
       </ul>
       <button onClick={logout} className="navbar-logout">
         Logout

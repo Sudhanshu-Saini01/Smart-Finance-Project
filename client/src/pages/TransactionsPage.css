@@ -1,46 +1,49 @@
-/* client/src/pages/TransactionsPage.css */
+/* client/src/pages/TransactionsPage.css (OVERHAULED) */
 
 .transactions-page-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
 }
-
 .transactions-page-container h1 {
   font-size: 32px;
   color: #333;
   margin-bottom: 30px;
 }
-
-.table-container {
+.transaction-section {
   background: #fff;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  margin-bottom: 40px;
 }
-
+.transaction-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+.table-container {
+  overflow-x: auto;
+}
 table {
   width: 100%;
   border-collapse: collapse;
 }
-
 th,
 td {
   padding: 15px 20px;
   text-align: left;
   border-bottom: 1px solid #eee;
+  white-space: nowrap;
 }
-
 thead th {
   background-color: #f8f9fa;
   font-weight: 600;
   color: #555;
 }
-
 tbody tr:hover {
   background-color: #f1f1f1;
 }
-
 .type-pill {
   padding: 4px 10px;
   border-radius: 12px;
@@ -48,25 +51,33 @@ tbody tr:hover {
   font-weight: bold;
   text-transform: capitalize;
 }
-
 .type-pill.income {
   background-color: #d4edda;
   color: #155724;
 }
-
 .type-pill.expense {
   background-color: #f8d7da;
   color: #721c24;
 }
-
 .amount {
   font-weight: bold;
 }
-
 .amount.income {
   color: #28a745;
 }
-
 .amount.expense {
   color: #dc3545;
+}
+
+/* NEW: Style for separating months */
+.month-separator {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+  font-size: 18px;
+}
+.month-separator:first-child {
+  margin-top: 0;
 }

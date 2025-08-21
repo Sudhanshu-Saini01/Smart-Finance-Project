@@ -1,0 +1,54 @@
+/* client/src/pages/LoansPage.css (NEW FILE) */
+
+.loans-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.loans-page-container h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.loans-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 40px;
+}
+
+.loans-section h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.new-loan-placeholder {
+  text-align: center;
+  padding: 40px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+}
+
+.new-loan-placeholder p {
+  color: #888;
+  margin-top: 0;
+}
+
+.new-loan-placeholder button {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  background-color: #6c757d;
+  color: white;
+  cursor: not-allowed;
+}
+
+.loans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 30px;
+}
