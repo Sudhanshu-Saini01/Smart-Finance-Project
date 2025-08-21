@@ -46,12 +46,6 @@ function App() {
                 user={user}
                 className="current-month-card"
               />
-              {/* Logic to hide previous month card will be added later */}
-              <MonthlyStatusCard
-                data={summary?.previousMonth}
-                user={user}
-                className="previous-month-card"
-              />
             </div>
           )}
           <div className="page-content">

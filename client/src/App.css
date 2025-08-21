@@ -12,7 +12,7 @@ body {
   text-align: center;
 }
 
-.main-content {
+.main-content-area {
   /* Add padding to the top to prevent content from hiding behind the fixed navbar */
   padding-top: 70px;
 }
