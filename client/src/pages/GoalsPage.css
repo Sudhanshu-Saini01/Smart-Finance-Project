@@ -1,8 +1,8 @@
-/* client/src/pages/GoalsPage.css (NEW FILE) */
-/* /----- VERSION V2 -----/ */
+/* client/src/pages/GoalsPage.css (UPDATED) */
+/*-------- Start: Version V3.0.0---------*/
 
 .goals-page-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
 }
@@ -52,22 +52,8 @@
 }
 
 .goals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
-
-.empty-state {
-  text-align: center;
-  padding: 50px 30px;
-  border: 2px dashed #e0e0e0;
-  border-radius: 10px;
-  background-color: #fafafa;
-}
-
-.empty-state p {
-  font-size: 18px;
-  color: #666;
-  margin: 0;
-}
-/* /----- END VERSION V2 -----/ */
+/*-------- End: Version V3.0.0---------*/

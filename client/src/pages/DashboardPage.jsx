@@ -42,6 +42,18 @@ const DashboardPage = () => {
           })}
           .
         </p>
+        <div className="persistent-status-cards">
+          <MonthlyStatusCard
+            data={summary?.currentMonth}
+            user={user}
+            className="current-month-card"
+          />
+          <MonthlyStatusCard
+            data={summary?.previousMonth}
+            user={user}
+            className="previous-month-card"
+          />
+        </div>
       </div>
 
       {error && <p className="error-message">{error}</p>}

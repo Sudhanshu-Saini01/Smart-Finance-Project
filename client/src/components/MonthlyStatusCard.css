@@ -5,7 +5,7 @@
   max-width: 900px;
   color: white;
   padding: 25px;
-
+  margin-top: 50px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }

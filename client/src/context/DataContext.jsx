@@ -1,5 +1,4 @@
 // client/src/context/DataContext.jsx
-// /----- VERSION V2 -----/
 
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
@@ -15,6 +14,9 @@ const DataProvider = ({ children }) => {
   const [goals, setGoals] = useState([]);
   const [loans, setLoans] = useState([]);
   const [investments, setInvestments] = useState([]);
+  //-------- Start: Version V3.0.0---------//
+  const [commitments, setCommitments] = useState([]); // New state for commitments
+  //-------- End: Version V3.0.0---------//
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -26,7 +28,8 @@ const DataProvider = ({ children }) => {
 
     setLoading(true);
     try {
-      // This now fetches all V2 data in one go
+      //-------- Start: Version V3.0.0---------//
+      // Added the new commitments API call
       const [
         userRes,
         summaryRes,
@@ -34,6 +37,7 @@ const DataProvider = ({ children }) => {
         goalsRes,
         loansRes,
         investmentsRes,
+        commitmentsRes,
       ] = await Promise.all([
         axios.get("http://localhost:3001/api/users/profile"),
         axios.get("http://localhost:3001/api/transactions/monthly-summary"),
@@ -41,6 +45,7 @@ const DataProvider = ({ children }) => {
         axios.get("http://localhost:3001/api/goals"),
         axios.get("http://localhost:3001/api/loans"),
         axios.get("http://localhost:3001/api/investments"),
+        axios.get("http://localhost:3001/api/commitments"), // New API call
       ]);
 
       setUser(userRes.data);
@@ -49,9 +54,11 @@ const DataProvider = ({ children }) => {
       setGoals(goalsRes.data);
       setLoans(loansRes.data);
       setInvestments(investmentsRes.data);
+      setCommitments(commitmentsRes.data); // Set the new state
       setError("");
+      //-------- End: Version V3.0.0---------//
     } catch (err) {
-      console.error("Failed to fetch V2 data", err);
+      console.error("Failed to fetch V3 data", err);
       setError("Could not load financial data.");
     } finally {
       setLoading(false);
@@ -71,6 +78,9 @@ const DataProvider = ({ children }) => {
     goals,
     loans,
     investments,
+    //-------- Start: Version V3.0.0---------//
+    commitments, // Provide commitments to the rest of the app
+    //-------- End: Version V3.0.0---------//
     loading,
     error,
     refetchData: fetchData,
@@ -82,4 +92,3 @@ const DataProvider = ({ children }) => {
 };
 
 export { DataContext, DataProvider };
-// /----- END VERSION V2 -----/

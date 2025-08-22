@@ -13,6 +13,10 @@ const investmentRoutes = require("./routes/investmentRoutes");
 const loanRoutes = require("./routes/loanRoutes");
 // /----- END VERSION V2 -----/
 
+//-------- Start: Version V3.0.0---------//
+const commitmentRoutes = require("./routes/commitmentRoutes"); // Add this line
+//-------- End: Version V3.0.0---------//
+
 const app = express();
 const PORT = 3001;
 
@@ -34,6 +38,10 @@ app.use("/api/goals", goalRoutes);
 app.use("/api/investments", investmentRoutes);
 app.use("/api/loans", loanRoutes);
 // /----- END VERSION V2 -----/
+
+//-------- Start: Version V3.0.0---------//
+app.use("/api/commitments", commitmentRoutes); // Add this line
+//-------- End: Version V3.0.0---------//
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to the Smart Finance Manager API! 🚀" });

@@ -1,69 +1,73 @@
-// client/src/components/TransactionForm.jsx (UPDATE THIS FILE)
+// client/src/components/TransactionForm.jsx
 
 import React, { useState } from "react";
 import axios from "axios";
+import "./TransactionForm.css";
 
-const TransactionForm = ({ onTransactionAdded }) => {
+const TransactionForm = ({
+  onTransactionAdded,
+  onIncomeAdded,
+  wishlistItems,
+}) => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("expense");
-  const [category, setCategory] = useState("Other"); // New state
-  const [occurrence, setOccurrence] = useState("one-time"); // New state
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]); // New state for date
+  const [category, setCategory] = useState("Other");
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     if (!description || !amount || !category) {
       setError("Please fill in all required fields.");
       return;
     }
-
     try {
       const newTransaction = {
         description,
         amount: parseFloat(amount),
         type,
         category,
-        occurrence,
         date,
       };
-
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:3001/api/transactions",
         newTransaction
       );
-      onTransactionAdded(); // Notify parent to refetch all data
 
-      // Reset form
+      // /----- VERSION V2.1: Allocation Fix -----/
+      // If the primary transaction was income, trigger the modal with the new transaction data
+      if (type === "income" && onIncomeAdded) {
+        onIncomeAdded(res.data);
+      } else {
+        onTransactionAdded(); // Otherwise, just refetch data immediately
+      }
+      // /----- END VERSION V2.1 -----/
+
       setDescription("");
       setAmount("");
       setCategory("Other");
     } catch (err) {
-      setError("Failed to add transaction.");
-      console.error(err);
+      setError("Failed to add transaction.", err);
     }
   };
 
-  // Example categories
   const expenseCategories = [
     "Groceries",
     "Rent",
     "Utilities",
     "Transport",
     "Entertainment",
-    "Savings",
-    "Investment",
   ];
   const incomeCategories = ["Salary", "Freelance", "Bonus", "Other"];
+  const transactionTypes = ["expense", "income", "savings", "investment"];
 
   return (
-    <form onSubmit={handleSubmit} className="transaction-form">
-      {error && <p className="error-message">{error}</p>}
+    <form onSubmit={handleSubmit} className="compact-transaction-form">
+      {error && <p className="error-message full-width">{error}</p>}
       <div className="form-group">
-        <label>Description</label>
+        <label>{type === "income" ? "Source" : "Spent On"}</label>
         <input
           type="text"
           value={description}
@@ -71,7 +75,7 @@ const TransactionForm = ({ onTransactionAdded }) => {
         />
       </div>
       <div className="form-group">
-        <label>Amount</label>
+        <label>Amount (₹)</label>
         <input
           type="number"
           value={amount}
@@ -89,39 +93,41 @@ const TransactionForm = ({ onTransactionAdded }) => {
       <div className="form-group">
         <label>Type</label>
         <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
+          {transactionTypes.map((t) => (
+            <option key={t} value={t} style={{ textTransform: "capitalize" }}>
+              {t}
+            </option>
+          ))}
         </select>
       </div>
       <div className="form-group">
         <label>Category</label>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {type === "expense"
-            ? expenseCategories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))
-            : incomeCategories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
+          <optgroup label="General">
+            {type === "expense"
+              ? expenseCategories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))
+              : incomeCategories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+          </optgroup>
+          <optgroup label="Goals">
+            {wishlistItems &&
+              wishlistItems.map((item) => (
+                <option key={item._id} value={item.goalName}>
+                  {item.goalName}
                 </option>
               ))}
-        </select>
-      </div>
-      <div className="form-group">
-        <label>Occurrence</label>
-        <select
-          value={occurrence}
-          onChange={(e) => setOccurrence(e.target.value)}
-        >
-          <option value="one-time">One-Time</option>
-          <option value="monthly">Monthly</option>
-          <option value="weekly">Weekly</option>
+          </optgroup>
         </select>
       </div>
       <button type="submit" className="submit-btn">
-        Add Transaction
+        Add
       </button>
     </form>
   );

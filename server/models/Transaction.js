@@ -33,11 +33,11 @@ const transactionSchema = new Schema(
       trim: true,
       default: "Other",
     },
-    occurrence: {
-      type: String,
-      enum: ["one-time", "monthly", "weekly"],
-      default: "one-time",
-    },
+    // occurrence: {
+    //   type: String,
+    //   enum: ["one-time", "monthly", "weekly"],
+    //   default: "one-time",
+    // },
     date: {
       type: Date,
       default: Date.now,

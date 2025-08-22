@@ -1,5 +1,4 @@
 // server/models/Goal.js
-// /----- VERSION V2 -----/
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
@@ -39,13 +38,13 @@ const goalSchema = new Schema(
       enum: ["high", "medium", "low"],
       default: "medium",
     },
-    // This field will track which specific investments are linked to this goal
-    linkedInvestments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Investment",
-      },
-    ],
+    //-------- Start: Version V3.0.1---------//
+    // This field will track which specific recurring commitment is linked to this goal.
+    linkedCommitment: {
+      type: Schema.Types.ObjectId,
+      ref: "Commitment",
+    },
+    //-------- End: Version V3.0.1---------//
   },
   {
     timestamps: true,
@@ -55,4 +54,3 @@ const goalSchema = new Schema(
 const Goal = mongoose.model("Goal", goalSchema);
 
 module.exports = Goal;
-// /----- END VERSION V2 -----/

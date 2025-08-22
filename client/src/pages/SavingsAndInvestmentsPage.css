@@ -1,5 +1,5 @@
-/* client/src/pages/SavingsAndInvestmentsPage.css */
-/* /----- VERSION V2 -----/ */
+/* client/src/pages/SavingsAndInvestmentsPage.css (UPDATED) */
+/*-------- Start: Version V3.0.0---------*/
 
 .si-page-container {
   max-width: 1200px;
@@ -15,7 +15,7 @@
 
 .si-pools-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 30px;
   margin-bottom: 40px;
 }
@@ -50,72 +50,33 @@
 
 .si-section h3 {
   margin-top: 0;
-  margin-bottom: 10px;
-}
-.si-section p {
-  margin-top: 0;
   margin-bottom: 20px;
-  color: #666;
 }
 
-.si-form {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 15px;
-  align-items: center;
-}
-
-.si-form input,
-.si-form select {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.si-form button {
-  padding: 12px 25px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  height: 50px;
-}
-
-.investments-list {
+.commitments-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.investment-item {
+.commitment-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px;
   background-color: #f8f9fa;
   border-radius: 5px;
+  border-left: 3px solid #17a2b8;
 }
 
-.investment-info .investment-name {
-  font-weight: 500;
-}
-.investment-info .investment-type {
-  font-size: 12px;
-  color: #6c757d;
-}
-
-.investment-details {
-  text-align: right;
-}
-.investment-details .investment-roi {
-  font-size: 12px;
-  color: #28a745;
-}
-.investment-details .investment-amount {
+.commitment-item strong {
   font-size: 18px;
-  font-weight: bold;
 }
-/* /----- END VERSION V2 -----/ */
+
+.investments-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/*-------- End: Version V3.0.0---------*/

@@ -1,24 +1,25 @@
 // server/seed.js
-// /----- VERSION V2 -----/
+//-------- Start: Version V3.0.0---------//
 
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { faker } = require("@faker-js/faker");
 require("dotenv").config();
 
-// Import all of our V2 models
+// Import all of our V3 models
 const User = require("./models/User");
 const Transaction = require("./models/Transaction");
 const Goal = require("./models/Goal");
 const Investment = require("./models/Investment");
 const Loan = require("./models/Loan");
+const Commitment = require("./models/Commitment");
 
 const MONGODB_URI = process.env.DATABASE_URL;
 
 const seedDatabase = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log("MongoDB connected for V2 seeding...");
+    console.log("MongoDB connected for V3 seeding...");
 
     console.log("Clearing ALL existing data...");
     await User.deleteMany({});
@@ -26,6 +27,7 @@ const seedDatabase = async () => {
     await Goal.deleteMany({});
     await Investment.deleteMany({});
     await Loan.deleteMany({});
+    await Commitment.deleteMany({});
 
     console.log("Creating 10 new users with Indian names...");
     const users = [];
@@ -52,8 +54,6 @@ const seedDatabase = async () => {
           firstName: indianNames[i].split(" ")[0],
         }),
         password: hashedPassword,
-        unallocatedSavings: 0,
-        unallocatedInvestments: 0,
       });
       users.push(await user.save());
     }
@@ -61,35 +61,87 @@ const seedDatabase = async () => {
 
     console.log("Generating detailed financial history for each user...");
     for (const user of users) {
-      let tempUnallocatedSavings = 0;
-      let tempUnallocatedInvestments = 0;
+      // Create 2-3 recurring commitments for each user
+      const commitments = [];
+      // Savings Commitment
+      const rdCommitment = new Commitment({
+        user: user._id,
+        commitmentName: "Monthly Recurring Deposit",
+        amount: parseFloat(
+          faker.finance.amount({ min: 2000, max: 8000, dec: 0 })
+        ),
+        commitmentType: "savings",
+        paymentDay: 5,
+      });
+      commitments.push(await rdCommitment.save());
 
-      // Generate 12 months of income and auto-allocate to pools
+      // Investment Commitment
+      const sipCommitment = new Commitment({
+        user: user._id,
+        commitmentName: "Equity Mutual Fund SIP",
+        amount: parseFloat(
+          faker.finance.amount({ min: 5000, max: 15000, dec: 0 })
+        ),
+        commitmentType: "investment",
+        paymentDay: 10,
+      });
+      commitments.push(await sipCommitment.save());
+
+      // Create a Goal and link a commitment to it
+      const goal = new Goal({
+        user: user._id,
+        goalName: `Save for ${faker.commerce.product()}`,
+        targetAmount: parseFloat(
+          faker.finance.amount({ min: 100000, max: 1000000, dec: 0 })
+        ),
+        goalType: "item",
+        imageUrl: faker.image.urlLoremFlickr({ category: "travel" }),
+        priority: "high",
+        linkedCommitment: rdCommitment._id, // Link the RD to this goal
+      });
+      await goal.save();
+
+      // Generate 12 months of income, which will trigger the automation
       for (let i = 0; i < 12; i++) {
         const date = new Date();
         date.setMonth(date.getMonth() - i);
-        const incomeAmount = parseFloat(
-          faker.finance.amount({ min: 40000, max: 120000, dec: 0 })
-        );
-
         const incomeTx = new Transaction({
           user: user._id,
           description: "Monthly Salary",
-          amount: incomeAmount,
+          amount: parseFloat(
+            faker.finance.amount({ min: 50000, max: 150000, dec: 0 })
+          ),
           type: "income",
           category: "Salary",
-          date: date,
+          date: new Date(date.getFullYear(), date.getMonth(), 1), // First day of the month
         });
         await incomeTx.save();
 
-        tempUnallocatedSavings +=
-          incomeAmount * (user.allocations.savings / 100);
-        tempUnallocatedInvestments +=
-          incomeAmount * (user.allocations.investment / 100);
+        // Manually trigger the automation logic from our backend for the seed
+        for (const commitment of commitments) {
+          const commitmentTx = new Transaction({
+            user: user._id,
+            description: commitment.commitmentName,
+            amount: commitment.amount,
+            type: commitment.commitmentType,
+            category: "Recurring Commitment",
+            date: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              commitment.paymentDay
+            ),
+          });
+          await commitmentTx.save();
+          if (commitment.linkedGoal) {
+            await Goal.findByIdAndUpdate(commitment.linkedGoal, {
+              $inc: { currentAmount: commitment.amount },
+            });
+          }
+        }
       }
 
-      // Generate 100 random expenses
-      for (let i = 0; i < 100; i++) {
+      // Generate 80 random, non-recurring expenses
+      for (let i = 0; i < 80; i++) {
         const expense = new Transaction({
           user: user._id,
           description: faker.commerce.productName(),
@@ -105,118 +157,21 @@ const seedDatabase = async () => {
             "Other",
           ]),
           date: faker.date.past({ years: 1 }),
+          occurrence: "one-time",
         });
         await expense.save();
       }
-
-      // Generate 2-3 real investments from the investment pool
-      for (let i = 0; i < 2; i++) {
-        if (tempUnallocatedInvestments > 20000) {
-          const amountToInvest = parseFloat(
-            faker.finance.amount({
-              min: 10000,
-              max: tempUnallocatedInvestments / 2,
-              dec: 0,
-            })
-          );
-          const investment = new Investment({
-            user: user._id,
-            investmentName: `${faker.helpers.arrayElement([
-              "ICICI Prudential",
-              "HDFC",
-              "SBI",
-              "Axis",
-            ])} ${faker.helpers.arrayElement([
-              "Bluechip",
-              "MidCap",
-              "Index",
-            ])} Fund`,
-            investmentType: "Mutual Fund",
-            amountInvested: amountToInvest,
-            expectedRoi: parseFloat(
-              faker.finance.amount({ min: 8, max: 15, dec: 1 })
-            ),
-          });
-          await investment.save();
-          tempUnallocatedInvestments -= amountToInvest;
-        }
-      }
-
-      // Generate 2-3 goals
-      for (let i = 0; i < 2; i++) {
-        const goal = new Goal({
-          user: user._id,
-          goalName: `Fund for ${faker.commerce.product()}`,
-          targetAmount: parseFloat(
-            faker.finance.amount({ min: 50000, max: 1500000, dec: 0 })
-          ),
-          goalType: "item",
-          imageUrl: faker.image.urlLoremFlickr({ category: "technics" }),
-          priority: faker.helpers.arrayElement(["high", "medium", "low"]),
-        });
-        await goal.save();
-      }
-
-      // Generate 1-2 loans for some users
-      if (Math.random() > 0.5) {
-        const loanType = faker.helpers.arrayElement([
-          "vehicle",
-          "home",
-          "personal",
-        ]);
-        const assetType =
-          loanType === "home"
-            ? "appreciating"
-            : loanType === "vehicle"
-            ? "depreciating"
-            : "neutral";
-        const totalAmount = parseFloat(
-          faker.finance.amount({ min: 100000, max: 2500000, dec: 0 })
-        );
-        const loan = new Loan({
-          user: user._id,
-          loanName: `${
-            loanType.charAt(0).toUpperCase() + loanType.slice(1)
-          } Loan`,
-          lender: `${faker.helpers.arrayElement([
-            "HDFC Bank",
-            "SBI",
-            "ICICI Bank",
-            "Bajaj Finserv",
-          ])}`,
-          loanType: loanType,
-          assetType: assetType,
-          totalAmount: totalAmount,
-          amountPaid: parseFloat(
-            faker.finance.amount({ min: 10000, max: totalAmount / 4, dec: 0 })
-          ),
-          emi: parseFloat(
-            faker.finance.amount({ min: 5000, max: 40000, dec: 0 })
-          ),
-          interestRate: parseFloat(
-            faker.finance.amount({ min: 8.5, max: 14.5, dec: 1 })
-          ),
-          startDate: faker.date.past({ years: 2 }),
-          endDate: faker.date.future({ years: 5 }),
-        });
-        await loan.save();
-      }
-
-      // Finally, update the user with the final pool amounts
-      user.unallocatedSavings = tempUnallocatedSavings;
-      user.unallocatedInvestments = tempUnallocatedInvestments;
-      await user.save();
     }
-    console.log("Financial history generated successfully!");
+    console.log("V3 financial history generated successfully!");
 
     await mongoose.disconnect();
     console.log("MongoDB disconnected.");
   } catch (error) {
-    console.error("Error seeding database:", error);
+    console.error("Error seeding V3 database:", error);
     await mongoose.disconnect();
     process.exit(1);
   }
 };
 
 seedDatabase();
-// /----- END VERSION V2 -----/
+//-------- End: Version V3.0.0---------//

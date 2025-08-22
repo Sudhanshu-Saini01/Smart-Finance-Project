@@ -5,53 +5,118 @@ const router = express.Router();
 const auth = require("../middleware/authMiddleware");
 const Transaction = require("../models/Transaction");
 const User = require("../models/User");
+//-------- Start: Version V3.0.0---------//
+const Commitment = require("../models/Commitment");
+const Goal = require("../models/Goal");
+const Loan = require("../models/Loan");
+const Investment = require("../models/Investment");
+//-------- End: Version V3.0.0---------//
 
-// /----- VERSION V2 -----/
-// @route   POST /api/transactions
-// @desc    Add a new transaction and handle income/savings/investment allocation
-// @access  Private
+// The POST route is now much simpler. It no longer handles any automation.
 router.post("/", auth, async (req, res) => {
   try {
     const { description, amount, type, category, date } = req.body;
-    const user = await User.findById(req.user.id);
-    const transactionAmount = parseFloat(amount);
-
     const newTransaction = new Transaction({
-      user: user._id,
+      user: req.user.id,
       description,
-      amount: transactionAmount,
+      amount: parseFloat(amount),
       type,
       category,
-      date,
+      date: date ? new Date(date) : new Date(),
     });
     await newTransaction.save();
-
-    // Handle allocation to money pools
-    if (type === "income") {
-      const { allocations } = user;
-      const savingsAmount = transactionAmount * (allocations.savings / 100);
-      const investmentAmount =
-        transactionAmount * (allocations.investment / 100);
-
-      user.unallocatedSavings += savingsAmount;
-      user.unallocatedInvestments += investmentAmount;
-    } else if (type === "savings") {
-      user.unallocatedSavings += transactionAmount;
-    } else if (type === "investment") {
-      user.unallocatedInvestments += transactionAmount;
-    }
-    await user.save();
-
     res.status(201).json(newTransaction);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
-// /----- END VERSION V2 -----/
+
+// // @route   POST /api/transactions
+// // @desc    Add a new transaction and trigger automation on first income
+// // @access  Private
+// router.post("/", auth, async (req, res) => {
+//   try {
+//     const { description, amount, type, category, date } = req.body;
+//     const transactionAmount = parseFloat(amount);
+
+//     const newTransaction = new Transaction({
+//       user: req.user.id,
+//       description,
+//       amount: transactionAmount,
+//       type,
+//       category,
+//       date: date ? new Date(date) : new Date(),
+//     });
+//     await newTransaction.save();
+
+//     //-------- Start: Version V3.0.0---------//
+//     // AUTOMATION LOGIC: Trigger on first income of the month
+//     if (type === "income") {
+//       const now = new Date(newTransaction.date);
+//       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+//       // Check if another income transaction already exists this month
+//       const existingIncome = await Transaction.findOne({
+//         user: req.user.id,
+//         type: "income",
+//         date: { $gte: startOfMonth },
+//         _id: { $ne: newTransaction._id }, // Exclude the one we just created
+//       });
+
+//       // If no other income exists this month, run the commitments
+//       if (!existingIncome) {
+//         console.log(
+//           "First income of the month detected. Running commitments..."
+//         );
+//         const commitments = await Commitment.find({ user: req.user.id });
+
+//         for (const commitment of commitments) {
+//           // 1. Create a transaction for the commitment
+//           const commitmentTx = new Transaction({
+//             user: req.user.id,
+//             description: commitment.commitmentName,
+//             amount: commitment.amount,
+//             type: commitment.commitmentType,
+//             category: "Recurring Commitment",
+//             date: new Date(
+//               now.getFullYear(),
+//               now.getMonth(),
+//               commitment.paymentDay
+//             ),
+//           });
+//           await commitmentTx.save();
+
+//           // 2. Update linked goals, loans, or investments
+//           if (commitment.linkedGoal) {
+//             await Goal.findByIdAndUpdate(commitment.linkedGoal, {
+//               $inc: { currentAmount: commitment.amount },
+//             });
+//           }
+//           if (commitment.linkedLoan) {
+//             await Loan.findByIdAndUpdate(commitment.linkedLoan, {
+//               $inc: { amountPaid: commitment.amount },
+//             });
+//           }
+//           if (commitment.linkedInvestment) {
+//             await Investment.findByIdAndUpdate(commitment.linkedInvestment, {
+//               $inc: { amountInvested: commitment.amount },
+//             });
+//           }
+//         }
+//       }
+//     }
+//     //-------- End: Version V3.0.0---------//
+
+//     res.status(201).json(newTransaction);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 // --- DYNAMIC MONTHLY SUMMARY ROUTE ---
-// This route now correctly calculates savings/investments based on transactions within the month
+// ... (This part of the file remains the same) ...
 router.get("/monthly-summary", auth, async (req, res) => {
   try {
     const now = new Date();
@@ -85,18 +150,16 @@ router.get("/monthly-summary", auth, async (req, res) => {
         totalExpense = 0,
         totalSavings = 0,
         totalInvestments = 0;
-      let lastIncomeDate = null,
-        lastExpenseDate = null;
+      let totalFixedExpense = 0;
 
       for (const t of transactions) {
         if (t.type === "income") {
           totalIncome += t.amount;
-          if (!lastIncomeDate || t.date > lastIncomeDate)
-            lastIncomeDate = t.date;
         } else if (t.type === "expense") {
           totalExpense += t.amount;
-          if (!lastExpenseDate || t.date > lastExpenseDate)
-            lastExpenseDate = t.date;
+          if (t.occurrence === "monthly" || t.occurrence === "weekly") {
+            totalFixedExpense += t.amount;
+          }
         } else if (t.type === "savings") {
           totalSavings += t.amount;
         } else if (t.type === "investment") {
@@ -108,8 +171,7 @@ router.get("/monthly-summary", auth, async (req, res) => {
         totalExpense,
         totalSavings,
         totalInvestments,
-        lastIncomeDate,
-        lastExpenseDate,
+        totalFixedExpense,
       };
     };
 
@@ -146,6 +208,7 @@ router.get("/monthly-summary", auth, async (req, res) => {
 });
 
 // --- ROUTE TO GET ALL OF A USER'S TRANSACTIONS ---
+// ... (This part of the file remains the same) ...
 router.get("/", auth, async (req, res) => {
   try {
     const transactions = await Transaction.find({ user: req.user.id }).sort({

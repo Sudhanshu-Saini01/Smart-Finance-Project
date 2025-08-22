@@ -1,0 +1,48 @@
+/* client/src/components/ExpensesBlueprint.css (NEW FILE) */
+/*-------- Start: Version V3.0.0---------*/
+
+.blueprint-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  background-color: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.blueprint-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.blueprint-item .label {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.blueprint-item .value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.blueprint-item .value.income {
+  color: #28a745;
+}
+
+.blueprint-item .value.expense {
+  color: #dc3545;
+}
+
+.blueprint-item.highlight {
+  background-color: #e9f5ff;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.blueprint-item.highlight .value {
+  color: #004085;
+}
+/*-------- End: Version V3.0.0---------*/

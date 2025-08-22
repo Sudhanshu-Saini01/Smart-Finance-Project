@@ -80,15 +80,15 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/goals">
-            <Target size={18} />
-            <span>Goals</span>
-          </NavLink>
-        </li>
-        <li>
           <NavLink to="/investments">
             <PiggyBank size={18} />
             <span>Savings & Investments</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/goals">
+            <Target size={18} />
+            <span>Goals</span>
           </NavLink>
         </li>
         <li>
