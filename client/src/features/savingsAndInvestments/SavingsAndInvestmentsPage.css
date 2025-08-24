@@ -1,0 +1,83 @@
+/* client/src/pages/SavingsAndInvestmentsPage.css */
+
+/*
+  This file uses the same CSS variables defined in your other stylesheets
+  (like TransactionsPage.css) to ensure a consistent look and feel across the entire application.
+*/
+.si-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--page-background);
+}
+
+.si-page-container h1 {
+  font-size: 2rem; /* 32px */
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+
+/*
+  This is the main "card" style used for each major section on the page,
+  providing a consistent container with a clean background, border, and shadow.
+*/
+.si-section {
+  background: var(--section-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  margin-bottom: 2.5rem; /* 40px */
+}
+
+.si-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem; /* 24px */
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/*
+  NEW: This creates a responsive grid for the portfolio items.
+  On small screens, it shows one card per row. On larger screens,
+  it automatically adjusts to show two cards per row.
+*/
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to one column */
+  gap: 1.5rem; /* 24px */
+}
+
+/* On screens wider than 768px (tablets and desktops), switch to a two-column grid. */
+@media (min-width: 768px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/*
+  This style is for the message that appears when there are no commitments.
+  It centers the text and gives it a clean, subtle appearance.
+*/
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: var(--page-background);
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--border-color);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/*
+  Note: The old `.commitments-list` and `.commitment-item` styles have been removed
+  as they are replaced by the more advanced `.portfolio-grid` and the styles
+  in `PortfolioItem.css`. This keeps the stylesheet clean and focused.
+*/

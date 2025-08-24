@@ -1,0 +1,93 @@
+/* client/src/components/ui/Notification/Notification.css */
+
+/*
+  This container positions the notification in the bottom-right corner of the screen
+  and ensures it stays there even when the user scrolls.
+*/
+.notification-container {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20000; /* Ensures it appears above all other content */
+}
+
+/*
+  This is the main style for the notification "toast" itself.
+  It includes modern styling like shadows, borders, and a fade-in animation.
+*/
+.notification-toast {
+  width: 100%;
+  max-width: 380px;
+  background-color: var(--section-background);
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+  border-left-width: 5px;
+  padding: 1.5rem;
+  animation: slideInDown 0.4s ease;
+  margin: auto;
+}
+
+/* --- Color Themes --- */
+/* These rules apply different left-border colors based on the notification type. */
+.notification-toast.success {
+  border-left-color: var(--income-color);
+}
+
+.notification-toast.error {
+  border-left-color: var(--expense-color);
+}
+
+.notification-content h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.notification-content p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* --- Developer Details Section --- */
+.developer-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.details-toggle {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.details-payload {
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #374151;
+  white-space: pre-wrap; /* Ensures long lines wrap correctly */
+  word-break: break-all;
+}
+
+/* --- Animation --- */
+/* UPDATE: The keyframes have been changed to animate from the top. */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

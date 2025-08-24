@@ -1,42 +1,61 @@
 // server/models/User.js
 
-// --- 1. IMPORT MONGOOSE ---
-// We need mongoose to define our schema and model
+// --- IMPORTS ---
+// Mongoose is our tool for creating data schemas, which are like blueprints for our database documents.
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// --- 2. DEFINE THE USER SCHEMA ---
-// This is the blueprint for our user data.
-// It specifies the fields, their types, and any rules (like being required or unique).
+// --- SCHEMA DEFINITION ---
+// This blueprint defines the structure and rules for every user document in our database.
 const userSchema = new Schema(
   {
+    // --- Basic Information ---
+    name: {
+      type: String,
+      required: true, // A name is mandatory.
+      trim: true, // Removes any extra spaces from the beginning or end.
+    },
     email: {
       type: String,
-      required: true, // An email is mandatory
-      unique: true, // Every email must be unique in the database
-      trim: true, // Removes any extra whitespace from the start and end
-      lowercase: true, // Stores the email in lowercase to avoid case-sensitivity issues
+      required: true, // An email is mandatory.
+      unique: true, // Each email must be unique in the database.
+      trim: true,
+      lowercase: true, // Converts the email to lowercase to ensure consistency.
     },
     password: {
       type: String,
-      required: true, // A password is mandatory
+      required: true, // A password is mandatory.
+    },
+
+    // --- Financial Settings ---
+    // Default allocation percentages for incoming funds.
+    allocations: {
+      expense: { type: Number, default: 70 }, // 70% to daily expenses.
+      savings: { type: Number, default: 20 }, // 20% to savings.
+      investment: { type: Number, default: 10 }, // 10% to investments.
+    },
+
+    // --- Fund Pools ---
+    // These fields track the user's available funds that have been allocated but not yet spent or assigned to a specific goal.
+    unallocatedSavings: {
+      type: Number,
+      default: 0,
+    },
+    unallocatedInvestments: {
+      type: Number,
+      default: 0,
     },
   },
   {
-    // --- 3. ADD TIMESTAMPS ---
-    // This option automatically adds two fields to our documents:
-    // `createdAt` and `updatedAt`. It's great for tracking when data is created or modified.
+    // --- OPTIONS ---
+    // Automatically adds `createdAt` and `updatedAt` fields to each document,
+    // which is useful for tracking when data is created or modified.
     timestamps: true,
   }
 );
 
-// --- 4. CREATE AND EXPORT THE MODEL ---
-// We compile our schema into a model. A model is like a class or a template
-// that we can use to create, read, update, and delete user documents in our database.
-// The first argument 'User' is the singular name of the collection your model is for.
-// Mongoose automatically looks for the plural, lowercased version of your model name.
-// So, the 'User' model will be for the 'users' collection in the database.
+// --- MODEL CREATION & EXPORT ---
+// Compiles our schema blueprint into a usable 'User' model and exports it.
+// This model is what we'll use to find, create, update, and delete users in our database.
 const User = mongoose.model("User", userSchema);
-
-// We export the User model so we can use it in other files in our project (like index.js)
 module.exports = User;

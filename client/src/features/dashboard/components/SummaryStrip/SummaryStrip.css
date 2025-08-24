@@ -1,0 +1,53 @@
+/* client/src/components/SummaryStrip.css */
+/*-------- Start: Version V3.0.0---------*/
+
+.summary-strip {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+  width: auto;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.strip-item {
+  text-align: center;
+  padding: 0 15px;
+  border-right: 1px solid #eee;
+}
+
+.strip-item:last-child {
+  border-right: none;
+}
+
+.strip-item .label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.strip-item .value {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.value.income {
+  color: #28a745;
+}
+.value.expense {
+  color: #dc3545;
+}
+.value.savings {
+  color: #17a2b8;
+}
+.value.investments {
+  color: #ffc107;
+}
+
+/*-------- End: Version V3.0.0---------*/

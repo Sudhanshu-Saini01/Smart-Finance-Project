@@ -1,0 +1,55 @@
+/* Keep this simple for now */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  text-align: center;
+}
+
+.loading-fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.main-content-area {
+  flex-grow: 1;
+  padding-top: 10px; /* Space for the sticky navbar */
+}
+
+.persistent-status-cards {
+  padding: 30px 40px 0 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* /----- VERSION V2.1 -----/ */
+.persistent-status-cards.two-card-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Make current month card 1.5x wider */
+  gap: 30px;
+}
+
+.persistent-status-cards.single-card-layout {
+  display: grid;
+  grid-template-columns: 1fr; /* A single column */
+  max-width: 900px; /* Limit the width of the single card */
+}
+/* /----- END VERSION V2.1 -----/ */
