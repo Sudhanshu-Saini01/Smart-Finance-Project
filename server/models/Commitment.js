@@ -1,14 +1,18 @@
 // server/models/Commitment.js
-//-------- Start: Version V3.0.0---------//
 
+// --- IMPORTS ---
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// --- SCHEMA DEFINITION ---
+// This blueprint defines a recurring financial commitment for a user.
+// It's used to automate transactions for things like bills, savings plans, or loan payments.
 const commitmentSchema = new Schema(
   {
+    // --- Core Information ---
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", // Establishes a direct link to the User model.
       required: true,
     },
     commitmentName: {
@@ -20,49 +24,43 @@ const commitmentSchema = new Schema(
       type: Number,
       required: true,
     },
-    // This tells the app what KIND of commitment it is.
     commitmentType: {
       type: String,
-      enum: ["expense", "savings", "investment", "loan"],
+      // 'enum' restricts this field to only accept one of the specified values.
+      enum: ["expense", "savings", "investment", "loan", "income"],
       required: true,
     },
-    // Replaced paymentDay with a more flexible system
+
+    // --- Scheduling ---
     frequency: {
       type: String,
-      enum: ["daily", "weekly", "monthly", "quarterly", "yearly", "one-time"],
-      default: "one-time",
+      enum: ["daily", "weekly", "monthly", "quarterly", "yearly"],
+      required: true,
     },
     startDate: {
       type: Date,
-      default: Date.now,
+      default: Date.now, // Defaults to the date the commitment was created.
     },
-    // This is crucial for tracking when the commitment was last paid.
+    // Tracks the last time this commitment was processed to prevent duplicate transactions.
     lastExecutionDate: {
       type: Date,
     },
 
-    // This links a savings/investment commitment directly to a goal.
+    // --- Optional Linking ---
+    // Connects a savings or investment commitment to a specific financial goal.
     linkedGoal: {
       type: Schema.Types.ObjectId,
-      ref: "Goal",
-    },
-    // This links the commitment to a specific loan document.
-    linkedLoan: {
-      type: Schema.Types.ObjectId,
-      ref: "Loan",
-    },
-    // This links the commitment to a specific investment document.
-    linkedInvestment: {
-      type: Schema.Types.ObjectId,
-      ref: "Investment",
+      ref: "Goal", // Establishes a direct link to the Goal model.
     },
   },
   {
+    // --- OPTIONS ---
+    // Automatically adds `createdAt` and `updatedAt` fields.
     timestamps: true,
   }
 );
 
+// --- MODEL CREATION & EXPORT ---
+// Compiles the schema into a 'Commitment' model for interacting with the database.
 const Commitment = mongoose.model("Commitment", commitmentSchema);
-
 module.exports = Commitment;
-//-------- End: Version V3.0.0---------//

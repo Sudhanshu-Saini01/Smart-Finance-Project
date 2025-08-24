@@ -1,0 +1,198 @@
+/* client/src/pages/TransactionsPage.css */
+
+/*
+  CSS variables are used here to create a consistent and easily customizable theme
+  for the entire transactions page.
+*/
+:root {
+  --page-background: #f9fafb; /* A very light grey for the page background */
+  --section-background: #ffffff;
+  --border-color: #e5e7eb;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --primary-color: #4f46e5;
+  --border-radius: 12px; /* A slightly larger radius for a modern look */
+  --income-color: #16a34a;
+  --income-background: #f0fdf4;
+  --expense-color: #dc2626;
+  --expense-background: #fef2f2;
+}
+
+.transactions-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--page-background);
+}
+
+.transactions-page-container h1 {
+  font-size: 2rem; /* 32px */
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+
+.transaction-section {
+  background: var(--section-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  margin-bottom: 2.5rem; /* 40px */
+}
+
+.transaction-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem; /* 24px */
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/*
+  NEW: This grid is used to place the "Add Transaction" and "Upcoming Payments"
+  sections side-by-side on wider screens for a more compact layout.
+  You will need to wrap these two sections in a div with this class in your JSX file.
+*/
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to a single column on mobile */
+  gap: 2.5rem;
+}
+
+/* On screens wider than 1024px, the grid will switch to two columns. */
+@media (min-width: 1024px) {
+  .actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.table-container {
+  overflow-x: auto; /* Ensures table is scrollable on small screens */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 1rem 1.5rem; /* 16px 24px */
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+thead th {
+  background-color: var(--page-background);
+  font-weight: 600;
+  font-size: 0.75rem; /* 12px */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.type-pill {
+  padding: 4px 12px;
+  border-radius: 9999px; /* Creates a perfect pill shape */
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.type-pill.income {
+  background-color: var(--income-background);
+  color: var(--income-color);
+}
+
+.type-pill.expense {
+  background-color: var(--expense-background);
+  color: var(--expense-color);
+}
+
+.amount {
+  font-weight: 600;
+}
+
+.amount.income {
+  color: var(--income-color);
+}
+
+.amount.expense {
+  color: var(--expense-color);
+}
+
+/*
+  UPDATE: The month separator is now a solid bar with bold text,
+  making it much easier to distinguish between different months in the transaction history.
+*/
+.month-group {
+  background-color: var(--section-background);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.month-separator {
+  margin: 0 0 1.5rem 0;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: #e5e6ea; /* A light grey background */
+
+  /* border-radius: 8px; */
+  color: var(--text-primary);
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700; /* Bolder text */
+}
+
+.month-separator:first-of-type {
+  margin-top: 0;
+}
+
+/*
+  UPDATE: The simulator section now has a max-width and is centered,
+  preventing it from becoming too wide on large screens.
+*/
+.date-simulator {
+  border: 1px dashed var(--primary-color);
+  background-color: rgba(79, 70, 229, 0.05);
+  max-width: 500px; /* Prevents the section from being overly wide */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.date-simulator .form-group {
+  max-width: 100%;
+}
+
+.load-more-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--section-background);
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.load-more-btn:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}

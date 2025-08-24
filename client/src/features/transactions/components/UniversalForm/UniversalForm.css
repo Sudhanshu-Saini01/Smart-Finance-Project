@@ -1,0 +1,113 @@
+/* client/src/components/UniversalForm.css */
+
+/*
+  Using CSS variables makes the form's theme (colors, spacing) easy to customize.
+  You can change these values in one place, and they will update everywhere.
+*/
+.universal-form {
+  --form-background: #ffffff;
+  --form-border-color: #e0e0e0;
+  --input-background: #f7f7f7;
+  --input-border-color: #d1d5db;
+  --input-focus-border: #4f46e5; /* A modern indigo color for focus */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --button-background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --button-hover-background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+  --error-color: #dc2626;
+  --border-radius: 8px; /* Consistent rounded corners */
+}
+
+.universal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Increased gap for better spacing */
+  background-color: var(--form-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--form-border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Softer, more modern shadow */
+}
+
+.universal-form h2 {
+  margin: 0;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--input-border-color);
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+  font-size: 1rem; /* 16px */
+  background-color: var(--input-background);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for focus */
+}
+
+/* This provides visual feedback when a user clicks on an input field. */
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.submit-btn {
+  padding: 16px;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--button-background);
+  color: white;
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:hover {
+  background: var(--button-hover-background);
+}
+
+/* Adds a subtle "press down" effect when the button is clicked. */
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  background-color: rgba(220, 38, 38, 0.05);
+  padding: 10px;
+  border-radius: var(--border-radius);
+}

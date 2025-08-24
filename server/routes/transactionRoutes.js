@@ -1,30 +1,38 @@
 // server/routes/transactionRoutes.js
 
+// --- IMPORTS ---
 const express = require("express");
-const router = express.Router();
-const auth = require("../middleware/authMiddleware");
-const Transaction = require("../models/Transaction");
-const User = require("../models/User");
-//-------- Start: Version V3.0.0---------//
-const Commitment = require("../models/Commitment");
-const Goal = require("../models/Goal");
-const Loan = require("../models/Loan");
-const Investment = require("../models/Investment");
-//-------- End: Version V3.0.0---------//
+const auth = require("../middleware/authMiddleware"); // Middleware to protect routes.
+const Transaction = require("../models/Transaction"); // The data model for transactions.
 
-// The POST route is now much simpler. It no longer handles any automation.
+// Note: Unused models (User, Commitment, Goal, etc.) have been removed to keep the file clean.
+
+const router = express.Router();
+
+// --- ROUTES ---
+
+/**
+ * @route   POST /api/transactions
+ * @desc    Add a new transaction for the logged-in user.
+ * @access  Private
+ */
 router.post("/", auth, async (req, res) => {
   try {
     const { description, amount, type, category, date } = req.body;
+
+    // 1. Create New Transaction: Build a new transaction object using the provided data.
     const newTransaction = new Transaction({
-      user: req.user.id,
+      user: req.user.id, // Link the transaction to the authenticated user.
       description,
       amount: parseFloat(amount),
       type,
       category,
-      date: date ? new Date(date) : new Date(),
+      date: date ? new Date(date) : new Date(), // Use provided date or default to now.
     });
+
+    // 2. Save to Database: Persist the new transaction record.
     await newTransaction.save();
+
     res.status(201).json(newTransaction);
   } catch (err) {
     console.error(err.message);
@@ -32,93 +40,14 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// // @route   POST /api/transactions
-// // @desc    Add a new transaction and trigger automation on first income
-// // @access  Private
-// router.post("/", auth, async (req, res) => {
-//   try {
-//     const { description, amount, type, category, date } = req.body;
-//     const transactionAmount = parseFloat(amount);
-
-//     const newTransaction = new Transaction({
-//       user: req.user.id,
-//       description,
-//       amount: transactionAmount,
-//       type,
-//       category,
-//       date: date ? new Date(date) : new Date(),
-//     });
-//     await newTransaction.save();
-
-//     //-------- Start: Version V3.0.0---------//
-//     // AUTOMATION LOGIC: Trigger on first income of the month
-//     if (type === "income") {
-//       const now = new Date(newTransaction.date);
-//       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-//       // Check if another income transaction already exists this month
-//       const existingIncome = await Transaction.findOne({
-//         user: req.user.id,
-//         type: "income",
-//         date: { $gte: startOfMonth },
-//         _id: { $ne: newTransaction._id }, // Exclude the one we just created
-//       });
-
-//       // If no other income exists this month, run the commitments
-//       if (!existingIncome) {
-//         console.log(
-//           "First income of the month detected. Running commitments..."
-//         );
-//         const commitments = await Commitment.find({ user: req.user.id });
-
-//         for (const commitment of commitments) {
-//           // 1. Create a transaction for the commitment
-//           const commitmentTx = new Transaction({
-//             user: req.user.id,
-//             description: commitment.commitmentName,
-//             amount: commitment.amount,
-//             type: commitment.commitmentType,
-//             category: "Recurring Commitment",
-//             date: new Date(
-//               now.getFullYear(),
-//               now.getMonth(),
-//               commitment.paymentDay
-//             ),
-//           });
-//           await commitmentTx.save();
-
-//           // 2. Update linked goals, loans, or investments
-//           if (commitment.linkedGoal) {
-//             await Goal.findByIdAndUpdate(commitment.linkedGoal, {
-//               $inc: { currentAmount: commitment.amount },
-//             });
-//           }
-//           if (commitment.linkedLoan) {
-//             await Loan.findByIdAndUpdate(commitment.linkedLoan, {
-//               $inc: { amountPaid: commitment.amount },
-//             });
-//           }
-//           if (commitment.linkedInvestment) {
-//             await Investment.findByIdAndUpdate(commitment.linkedInvestment, {
-//               $inc: { amountInvested: commitment.amount },
-//             });
-//           }
-//         }
-//       }
-//     }
-//     //-------- End: Version V3.0.0---------//
-
-//     res.status(201).json(newTransaction);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
-
-// --- DYNAMIC MONTHLY SUMMARY ROUTE ---
-// ... (This part of the file remains the same) ...
+/**
+ * @route   GET /api/transactions/monthly-summary
+ * @desc    Get a financial summary for the current and previous months.
+ * @access  Private
+ */
 router.get("/monthly-summary", auth, async (req, res) => {
   try {
+    // 1. Define Date Ranges: Calculate the start and end dates for the current and previous months.
     const now = new Date();
     const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfCurrentMonth = new Date(
@@ -145,36 +74,25 @@ router.get("/monthly-summary", auth, async (req, res) => {
       999
     );
 
+    // 2. Helper Function: A reusable function to process a list of transactions and return totals.
     const processTransactions = (transactions) => {
-      let totalIncome = 0,
-        totalExpense = 0,
-        totalSavings = 0,
-        totalInvestments = 0;
-      let totalFixedExpense = 0;
+      let totals = {
+        totalIncome: 0,
+        totalExpense: 0,
+        totalSavings: 0,
+        totalInvestments: 0,
+      };
 
       for (const t of transactions) {
-        if (t.type === "income") {
-          totalIncome += t.amount;
-        } else if (t.type === "expense") {
-          totalExpense += t.amount;
-          if (t.occurrence === "monthly" || t.occurrence === "weekly") {
-            totalFixedExpense += t.amount;
-          }
-        } else if (t.type === "savings") {
-          totalSavings += t.amount;
-        } else if (t.type === "investment") {
-          totalInvestments += t.amount;
-        }
+        if (t.type === "income") totals.totalIncome += t.amount;
+        else if (t.type === "expense") totals.totalExpense += t.amount;
+        else if (t.type === "savings") totals.totalSavings += t.amount;
+        else if (t.type === "investment") totals.totalInvestments += t.amount;
       }
-      return {
-        totalIncome,
-        totalExpense,
-        totalSavings,
-        totalInvestments,
-        totalFixedExpense,
-      };
+      return totals;
     };
 
+    // 3. Fetch Data: Retrieve all transactions for the current and previous months from the database.
     const currentMonthTxs = await Transaction.find({
       user: req.user.id,
       date: { $gte: startOfCurrentMonth, $lte: endOfCurrentMonth },
@@ -184,21 +102,19 @@ router.get("/monthly-summary", auth, async (req, res) => {
       date: { $gte: startOfPreviousMonth, $lte: endOfPreviousMonth },
     });
 
-    const currentMonthData = processTransactions(currentMonthTxs);
-    const previousMonthData = processTransactions(previousMonthTxs);
-
+    // 4. Send Response: Process both sets of transactions and send the structured summary back to the client.
     res.json({
       currentMonth: {
         month: startOfCurrentMonth.toLocaleString("default", { month: "long" }),
         year: startOfCurrentMonth.getFullYear(),
-        ...currentMonthData,
+        ...processTransactions(currentMonthTxs),
       },
       previousMonth: {
         month: startOfPreviousMonth.toLocaleString("default", {
           month: "long",
         }),
         year: startOfPreviousMonth.getFullYear(),
-        ...previousMonthData,
+        ...processTransactions(previousMonthTxs),
       },
     });
   } catch (err) {
@@ -207,12 +123,15 @@ router.get("/monthly-summary", auth, async (req, res) => {
   }
 });
 
-// --- ROUTE TO GET ALL OF A USER'S TRANSACTIONS ---
-// ... (This part of the file remains the same) ...
+/**
+ * @route   GET /api/transactions
+ * @desc    Get all transactions for the logged-in user, sorted by most recent.
+ * @access  Private
+ */
 router.get("/", auth, async (req, res) => {
   try {
     const transactions = await Transaction.find({ user: req.user.id }).sort({
-      date: -1,
+      date: -1, // Sorts in descending order (newest first).
     });
     res.json(transactions);
   } catch (err) {
@@ -221,4 +140,6 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// --- EXPORT ---
+// Makes the router available for use in the main server file (index.js).
 module.exports = router;

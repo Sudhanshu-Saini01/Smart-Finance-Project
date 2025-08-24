@@ -1,13 +1,18 @@
 // server/models/Transaction.js
 
+// --- IMPORTS ---
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// --- SCHEMA DEFINITION ---
+// This blueprint defines the structure for a single financial transaction.
+// It's the fundamental record for all income, expenses, savings, and investments.
 const transactionSchema = new Schema(
   {
+    // --- Core Information ---
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", // Establishes a direct link to the User model.
       required: true,
     },
     description: {
@@ -19,35 +24,31 @@ const transactionSchema = new Schema(
       type: Number,
       required: true,
     },
-    // /----- VERSION V2 -----/
-    // The 'type' field is now more comprehensive.
     type: {
       type: String,
       required: true,
+      // 'enum' restricts this field to one of the four fundamental transaction types.
       enum: ["income", "expense", "savings", "investment"],
     },
-    // /----- END VERSION V2 -----/
     category: {
       type: String,
       required: true,
       trim: true,
-      default: "Other",
+      default: "Other", // Provides a fallback category if none is specified.
     },
-    // occurrence: {
-    //   type: String,
-    //   enum: ["one-time", "monthly", "weekly"],
-    //   default: "one-time",
-    // },
     date: {
       type: Date,
-      default: Date.now,
+      default: Date.now, // Defaults to the date the transaction was recorded.
     },
   },
   {
+    // --- OPTIONS ---
+    // Automatically adds `createdAt` and `updatedAt` fields.
     timestamps: true,
   }
 );
 
+// --- MODEL CREATION & EXPORT ---
+// Compiles the schema into a 'Transaction' model for interacting with the database.
 const Transaction = mongoose.model("Transaction", transactionSchema);
-
 module.exports = Transaction;

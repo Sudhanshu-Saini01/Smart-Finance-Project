@@ -1,14 +1,18 @@
 // server/models/Investment.js
-// /----- VERSION V2 -----/
 
+// --- IMPORTS ---
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// --- SCHEMA DEFINITION ---
+// This blueprint defines the structure for a user's investment record.
+// It's used to track different types of investments and their performance.
 const investmentSchema = new Schema(
   {
+    // --- Core Information ---
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", // Establishes a direct link to the User model.
       required: true,
     },
     investmentName: {
@@ -18,6 +22,7 @@ const investmentSchema = new Schema(
     },
     investmentType: {
       type: String,
+      // 'enum' restricts this field to a predefined list of investment types.
       enum: [
         "Mutual Fund",
         "Stock",
@@ -32,22 +37,26 @@ const investmentSchema = new Schema(
       type: Number,
       required: true,
     },
+
+    // --- Tracking Details ---
     startDate: {
       type: Date,
-      default: Date.now,
+      default: Date.now, // Defaults to the date the investment was recorded.
     },
+    // The user's expected Return on Investment (ROI) as a percentage.
     expectedRoi: {
-      // Expected Return on Investment
       type: Number,
       default: 0,
     },
   },
   {
+    // --- OPTIONS ---
+    // Automatically adds `createdAt` and `updatedAt` fields.
     timestamps: true,
   }
 );
 
+// --- MODEL CREATION & EXPORT ---
+// Compiles the schema into an 'Investment' model for interacting with the database.
 const Investment = mongoose.model("Investment", investmentSchema);
-
 module.exports = Investment;
-// /----- END VERSION V2 -----/

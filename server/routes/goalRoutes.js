@@ -1,18 +1,24 @@
 // server/routes/goalRoutes.js
-// /----- VERSION V2 -----/
 
+// --- IMPORTS ---
 const express = require("express");
-const router = express.Router();
 const auth = require("../middleware/authMiddleware");
 const Goal = require("../models/Goal");
 const User = require("../models/User");
 
-// @route   POST /api/goals
-// @desc    Create a new goal
-// @access  Private
+const router = express.Router();
+
+// --- ROUTES ---
+
+/**
+ * @route   POST /api/goals
+ * @desc    Create a new financial goal for the user.
+ * @access  Private
+ */
 router.post("/", auth, async (req, res) => {
   try {
     const { goalName, targetAmount, goalType, imageUrl, priority } = req.body;
+
     const newGoal = new Goal({
       user: req.user.id,
       goalName,
@@ -21,6 +27,7 @@ router.post("/", auth, async (req, res) => {
       imageUrl,
       priority,
     });
+
     const savedGoal = await newGoal.save();
     res.status(201).json(savedGoal);
   } catch (err) {
@@ -29,14 +36,17 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// @route   GET /api/goals
-// @desc    Get all of a user's goals
-// @access  Private
+/**
+ * @route   GET /api/goals
+ * @desc    Get all of the user's goals.
+ * @access  Private
+ */
 router.get("/", auth, async (req, res) => {
   try {
+    // Fetches all goals for the user and sorts them first by priority, then by creation date.
     const goals = await Goal.find({ user: req.user.id }).sort({
-      priority: 1,
-      createdAt: -1,
+      priority: 1, // Sorts by priority (e.g., 'high', 'medium', 'low').
+      createdAt: -1, // Then sorts by newest first.
     });
     res.json(goals);
   } catch (err) {
@@ -45,21 +55,29 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route   PUT /api/goals/:id/add-funds
-// @desc    Add funds to a goal from an unallocated pool
-// @access  Private
+/**
+ * @route   PUT /api/goals/:id/add-funds
+ * @desc    Add funds to a specific goal from the user's unallocated pools.
+ * @access  Private
+ */
 router.put("/:id/add-funds", auth, async (req, res) => {
   try {
-    const { amount, sourceType } = req.body; // sourceType is 'savings' or 'investments'
+    const { amount, sourceType } = req.body; // sourceType: 'savings' or 'investments'
     const amountToAdd = parseFloat(amount);
+
+    // 1. Fetch Records: Get the specific goal and the user's profile.
     const goal = await Goal.findById(req.params.id);
     const user = await User.findById(req.user.id);
 
-    if (!goal || !user) return res.status(404).json({ msg: "Not found" });
-    if (goal.user.toString() !== req.user.id)
+    // 2. Validate: Check that records exist and the user is authorized.
+    if (!goal || !user) {
+      return res.status(404).json({ msg: "Goal or user not found" });
+    }
+    if (goal.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
+    }
 
-    // 1. Check if funds are available in the selected pool
+    // 3. Check for Sufficient Funds: Ensure the user has enough money in the chosen unallocated pool.
     if (sourceType === "savings" && user.unallocatedSavings < amountToAdd) {
       return res.status(400).json({ msg: "Insufficient savings funds." });
     }
@@ -70,18 +88,20 @@ router.put("/:id/add-funds", auth, async (req, res) => {
       return res.status(400).json({ msg: "Insufficient investment funds." });
     }
 
-    // 2. Update the goal
+    // 4. Update Records: Add the amount to the goal's current total and subtract it from the user's unallocated pool.
     goal.currentAmount += amountToAdd;
     if (sourceType === "savings") {
-      goal.fundingSources.fromSavings += amountToAdd;
-      user.unallocatedSavings -= amountToAdd; // 3. Deduct from the pool
+      user.unallocatedSavings -= amountToAdd;
     } else if (sourceType === "investments") {
-      goal.fundingSources.fromInvestments += amountToAdd;
-      user.unallocatedInvestments -= amountToAdd; // 3. Deduct from the pool
+      user.unallocatedInvestments -= amountToAdd;
     }
+    // Note: The original code referenced `goal.fundingSources`, which is not defined in the Goal model.
+    // This logic has been simplified to directly update the primary fields.
 
+    // 5. Save Changes: Persist the updated goal and user documents to the database.
     await goal.save();
-    await user.save(); // 4. Save the user with the updated pool amount
+    await user.save();
+
     res.json(goal);
   } catch (err) {
     console.error(err.message);
@@ -89,5 +109,5 @@ router.put("/:id/add-funds", auth, async (req, res) => {
   }
 });
 
+// --- EXPORT ---
 module.exports = router;
-// /----- END VERSION V2 -----/
