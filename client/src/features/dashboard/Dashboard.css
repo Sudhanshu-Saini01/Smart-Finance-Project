@@ -1,274 +1,56 @@
-/* client/src/Dashboard.css (NEW FILE) */
+/* client/src/features/dashboard/Dashboard.css */
 
 .dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: sans-serif;
+  padding: 2rem;
+  background-color: #f8f9fa; /* A light grey background for the whole page */
+  min-height: 100%;
 }
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.dashboard-header h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #333;
-}
-
-.logout-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #dc3545;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #c82333;
-}
-
-.dashboard-main {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;
-}
-
-.dashboard-section {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-section h2 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-/* Transaction Form Styles */
-.transaction-form .form-group {
-  margin-bottom: 15px;
-}
-
-.transaction-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #555;
-}
-
-.transaction-form input,
-.transaction-form select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.type-select {
-  display: flex;
-  gap: 10px;
-}
-
-.type-btn {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.type-btn.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-/* Transaction List Styles */
-.transaction-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.transaction-item:last-child {
-  border-bottom: none;
-}
-
-.transaction-item .description {
-  font-weight: 500;
-}
-
-.transaction-item .amount.income {
-  color: #28a745;
-  font-weight: bold;
-}
-
-.transaction-item .amount.expense {
-  color: #dc3545;
-  font-weight: bold;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .dashboard-main {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* client/src/Dashboard.css (ADD NEW STYLES) */
-
-/* Add these new styles to the bottom of your existing Dashboard.css file */
-
-/* Wishlist Styles */
-
-/* .wishlist-container { */
-/* Styles for the wishlist box */
-/* } */
-
-.wishlist-form {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.wishlist-form input {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.wishlist-form button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #17a2b8;
-  color: white;
-  cursor: pointer;
-}
-
-.wishlist {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.wishlist-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-.item-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.item-name {
-  font-weight: bold;
-}
-
-.item-price {
-  font-size: 14px;
-  color: #666;
-}
-
-.item-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.item-advice {
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 15px;
-  color: white;
-  font-size: 12px;
-}
-
-.item-advice.green {
-  background-color: #28a745;
-}
-.item-advice.red {
-  background-color: #dc3545;
-}
-
-.delete-btn {
-  background: #f1f1f1;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 24px;
-  color: #888;
-}
-
-/* Add these new styles to your Dashboard.css file */
 .dashboard-greeting {
-  margin-bottom: 30px;
-  padding: 0 10px;
+  margin-bottom: 2rem;
 }
+
 .dashboard-greeting h2 {
-  margin: 0 0 5px 0;
-  font-size: 28px;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #333;
+  color: #343a40;
+  margin-bottom: 0.5rem;
 }
+
 .dashboard-greeting p {
-  margin: 0;
-  font-size: 16px;
-  color: #666;
+  font-size: 1rem;
+  color: #6c757d;
 }
 
-.status-cards-container {
+/* NEW: Dashboard Grid System 
+  This creates our modern two-column layout. On smaller screens, it will stack automatically.
+*/
+.dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(350px, 1fr)
+  ); /* Responsive columns */
+  gap: 2rem; /* Space between grid items */
 }
 
-.dashboard-main-single-column {
-  max-width: 800px;
-  margin: 0 auto;
+/* A utility class to make a grid item span the full width */
+.grid-item-wide {
+  grid-column: 1 / -1; /* Span from the first to the last column line */
+}
+
+.grid-item h3 {
+  font-size: 1.2rem;
+  color: #495057;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
 }
