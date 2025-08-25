@@ -1,0 +1,103 @@
+/* client/src/components/ui/UpcomingPayments/UpcomingPayments.css */
+.upcoming-payments-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.upcoming-payments-card h4 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.payments-timeline {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.payment-group h5 {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.payment-item:last-child {
+  border-bottom: none;
+}
+
+.payment-item:hover {
+  background-color: #f9f9f9;
+}
+
+.payment-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-name {
+  font-weight: 500;
+  color: #343a40;
+}
+
+.payment-type {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.payment-amount {
+  font-weight: 600;
+  color: #28a745;
+}
+
+.payment-status {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 70px;
+}
+
+.status-paid {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-upcoming {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-default {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.no-payments-message {
+  color: #6c757d;
+  text-align: center;
+  padding: 20px;
+}

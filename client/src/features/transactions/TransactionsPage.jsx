@@ -10,7 +10,9 @@ import TransactionForm from "@/features/transactions/components/TransactionForm/
 // == UPDATE: 2025-08-24 | Correct Component Path ==
 // This is the fix. The path now correctly points to the new UpcomingPayments
 // component inside the 'transactions' feature folder.
-import UpcomingPayments from "@/features/transactions/components/UpcomingPayments/UpcomingPayments";
+// import UpcomingPayments from "@/features/transactions/components/UpcomingPayments/UpcomingPayments";
+
+import UpcomingPayments from "@/components/ui/UpcomingPayments/UpcomingPayments";
 // ===================================================================
 import ExpensesBlueprint from "@/features/dashboard/components/ExpensesBlueprint/ExpensesBlueprint";
 import "./TransactionsPage.css";

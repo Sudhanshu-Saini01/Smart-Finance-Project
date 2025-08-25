@@ -58,7 +58,10 @@ const Navbar = () => {
         {/* == UPDATE: 2025-08-23 | Add Income Page Link == */}
         {/* This is the new link to our dedicated Income management page. */}
         <li>
-          <NavLink to="/income">
+          <NavLink
+            to="/income"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             <Wallet size={18} />
             <span>Income</span>
           </NavLink>
