@@ -1,4 +1,5 @@
 // server/controllers/userController.js
+
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
@@ -34,7 +35,8 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    next(error); // Pass the error to the error handling middleware)
+    // // res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -43,10 +45,29 @@ const registerUser = async (req, res) => {
 // @access  Public
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+
+  // --- 🐞 DEBUGGING LOGS START 🐞 ---
+  console.log("--- LOGIN ATTEMPT ---");
+  console.log(`1. Received login request for email: ${email}`);
+  // --- 🐞 DEBUGGING LOGS END 🐞 ---
+
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
+
+    // --- 🐞 DEBUGGING LOGS START 🐞 ---
+    if (!user) {
+      console.log("2. ❌ User not found in database.");
+    } else {
+      console.log(`2. ✅ User found: ${user.name}`);
+    }
+    // --- 🐞 DEBUGGING LOGS END 🐞 ---
 
     if (user && (await user.matchPassword(password))) {
+      // --- 🐞 DEBUGGING LOGS START 🐞 ---
+      console.log("3. ✅ Password is correct!");
+      console.log("----------------------");
+      // --- 🐞 DEBUGGING LOGS END 🐞 ---
+
       res.json({
         _id: user._id,
         name: user.name,
@@ -54,15 +75,47 @@ const loginUser = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
+      // --- 🐞 DEBUGGING LOGS START 🐞 ---
+      console.log("3. ❌ Password does NOT match.");
+      console.log("----------------------");
+      // --- 🐞 DEBUGGING LOGS END 🐞 ---
+
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
-    console.error("LOGIN ERROR:", error); // Log the actual error on the server
-    res.status(500).json({ message: "Server error" });
+    next(error);
+    // console.error("LOGIN ERROR:", error); // Log the actual error on the server
+    // res.status(500).json({ message: "Server error" });
+  }
+};
+
+// New 26.08.2025
+// --- Controller: Get User Profile ---
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+const getUserProfile = async (req, res, next) => {
+  try {
+    // The user object is attached to the request in the `protect` middleware
+    const user = req.user;
+
+    if (user) {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    next(error);
   }
 };
 
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
 };

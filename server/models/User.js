@@ -7,16 +7,21 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Please add a name"],
+      trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Please add an email"],
       unique: true,
+      trim: true,
+      lowercase: true,
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Please add a password"],
+      minlength: 4,
+      select: false,
     },
     monthlyIncome: {
       type: Number,
@@ -39,6 +44,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// --- Middleware: Encrypt password using bcrypt ---
 // This middleware runs BEFORE a user document is saved.
 userSchema.pre("save", async function (next) {
   // Only hash the password if it has been modified (or is new)
@@ -50,6 +56,12 @@ userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+// New 26.08.2025
+// --- Method: Match user entered password to hashed password in database ---
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
 const User = mongoose.model("User", userSchema);
 
