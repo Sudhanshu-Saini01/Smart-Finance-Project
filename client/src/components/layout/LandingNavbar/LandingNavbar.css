@@ -1,0 +1,251 @@
+/* client/src/components/layout/LandingNavbar/LandingNavbar.css */
+/* .landing-navbar {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 990;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4c68d7;
+  text-decoration: none;
+}
+
+.nav-links a {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #4c68d7;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-login-btn {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+}
+
+.nav-signup-btn {
+  background-color: #4c68d7;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.nav-signup-btn:hover {
+  background-color: #3a50a3;
+} */
+
+/* client/src/components/layout/LandingNavbar/LandingNavbar.css */
+.landing-navbar {
+  padding: 1.5rem 2rem;
+  /* position: fixed; Changed from sticky to fixed for transparency effect */
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: sticky;
+  z-index: 1000;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  /* transition: background-color 0.3s ease, padding 0.3s ease, */
+  /* box-shadow 0.3s ease; */
+}
+
+/* --- On-Scroll Effect --- */
+/* .landing-navbar.scrolled {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+} */
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4c68d7;
+  text-decoration: none;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* Underline effect on hover */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #4c68d7;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-login-btn {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-login-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.nav-signup-btn {
+  background-color: #4c68d7;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(76, 104, 215, 0.2);
+}
+
+.nav-signup-btn:hover {
+  background-color: #3a50a3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 104, 215, 0.3);
+}
+
+/* --- Hamburger Menu (Hidden on Desktop) --- */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger-menu .bar {
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 850px) {
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Start off-screen */
+    width: 60%;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+    transition: right 0.4s ease-in-out;
+  }
+
+  .nav-menu.active {
+    right: 0; /* Slide in */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+  }
+
+  .nav-links a {
+    font-size: 1.5rem;
+  }
+
+  .nav-actions {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .nav-signup-btn {
+    font-size: 1.2rem;
+    padding: 0.8rem 2rem;
+  }
+
+  .hamburger-menu {
+    display: flex;
+  }
+
+  /* Animate hamburger to an 'X' */
+  .landing-navbar.menu-open .hamburger-menu .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+  .landing-navbar.menu-open .hamburger-menu .bar:nth-child(2) {
+    opacity: 0;
+  }
+  .landing-navbar.menu-open .hamburger-menu .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+}

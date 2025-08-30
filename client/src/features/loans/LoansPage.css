@@ -1,56 +1,80 @@
-/* client/src/pages/LoansPage.css (NEW FILE) */
-/* /----- VERSION V2 -----/ */
+/* client/src/features/loans/LoansPage.css */
 
 .loans-page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 2rem;
 }
 
-.loans-page-container h1 {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 30px;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
 }
-
-.loans-section {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  margin-bottom: 40px;
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem;
 }
-
-.loans-section h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 22px;
+.page-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
 }
-
-.new-loan-placeholder {
-  text-align: center;
-  padding: 40px;
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-}
-
-.new-loan-placeholder p {
-  color: #888;
-  margin-top: 0;
-}
-
-.new-loan-placeholder button {
-  padding: 10px 25px;
-  border: none;
-  border-radius: 5px;
-  background-color: #6c757d;
+.add-loan-btn {
+  background-color: #4f46e5;
   color: white;
-  cursor: not-allowed;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
+.page-section {
+  margin-bottom: 2.5rem;
+}
+.page-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* --- Grid for the loan cards --- */
 .loans-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
 }
-/* /----- END VERSION V2 -----/ */
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+}
+
+/* --- LoanSummary Styles --- */
+.loan-summary-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.stat-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+.stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+}

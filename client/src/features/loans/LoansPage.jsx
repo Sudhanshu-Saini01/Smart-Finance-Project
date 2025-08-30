@@ -1,137 +1,63 @@
-// client/src/pages/LoansPage.jsx
-//-------- Start: Version V3.0.0---------//
+// client/src/features/loans/LoansPage.jsx
 
-import React, { useContext } from "react";
-import axios from "axios";
-import { DataContext } from "@/context/DataContext";
-import InfoCard from "@/components/ui/InfoCard/InfoCard";
-import UniversalForm from "@/features/transactions/components/UniversalForm/UniversalForm";
-import "./LoansPage.css";
-
-const loanFormConfig = [
-  {
-    name: "loanName",
-    label: "Loan Name",
-    placeholder: "e.g., Car Loan",
-    required: true,
-  },
-  {
-    name: "lender",
-    label: "Lender",
-    placeholder: "e.g., SBI Bank",
-    required: true,
-  },
-  {
-    name: "totalAmount",
-    label: "Total Amount (₹)",
-    type: "number",
-    required: true,
-  },
-  {
-    name: "interestRate",
-    label: "Interest Rate (%)",
-    type: "number",
-    required: true,
-  },
-  { name: "emi", label: "Monthly EMI (₹)", type: "number", required: true },
-  {
-    name: "startDate",
-    label: "Start Date",
-    type: "date",
-    required: true,
-    defaultValue: new Date().toISOString().split("T")[0],
-  },
-  { name: "endDate", label: "End Date", type: "date", required: true },
-  {
-    name: "assetType",
-    label: "Asset Type",
-    type: "select",
-    defaultValue: "neutral",
-    options: [
-      { value: "depreciating", label: "Depreciating (Car, Electronics)" },
-      { value: "appreciating", label: "Appreciating (Property)" },
-      { value: "neutral", label: "Neutral (Education, Personal)" },
-    ],
-  },
-];
+import React, { useState, useContext, useMemo } from 'react';
+import { DataContext } from '@/context/DataContext';
+import Modal from '@/components/ui/Modal/Modal';
+import LoanForm from './components/LoanForm/LoanForm';
+import LoanSummary from './components/LoanSummary/LoanSummary';
+// --- NEW: Import our advanced LoanCard component ---
+import LoanCard from './components/LoanCard/LoanCard'; 
+import './LoansPage.css';
 
 const LoansPage = () => {
-  const { loans, loading, error, refetchData } = useContext(DataContext);
-
-  const handleAddLoan = async (formData) => {
-    try {
-      await axios.post("http://localhost:3001/api/loans", formData);
-      refetchData();
-    } catch (err) {
-      console.error("Failed to add loan", err);
-      alert("Failed to add loan.");
-    }
-  };
+  const { loans, loading, error } = useContext(DataContext);
+  const [isFormModalOpen, setFormModalOpen] = useState(false);
 
   if (loading) {
     return <div className="loading-fullscreen">Loading Loans...</div>;
   }
 
   return (
-    <div className="loans-page-container">
-      <h1>Loan Management</h1>
-      <div className="loans-section">
-        <UniversalForm
-          title="Add a New Loan"
-          config={loanFormConfig}
-          onSubmit={handleAddLoan}
-          submitText="Add Loan"
-        />
-      </div>
-      <div className="loans-section">
-        <h3>Your Active Loans</h3>
+    <>
+      <Modal isOpen={isFormModalOpen} onClose={() => setFormModalOpen(false)}>
+        <LoanForm onClose={() => setFormModalOpen(false)} />
+      </Modal>
+
+      <div className="loans-page-container">
+        <header className="page-header">
+          <div>
+            <h1>Loan Management</h1>
+            <p>A comprehensive overview of your debts and liabilities.</p>
+          </div>
+          <button className="add-loan-btn" onClick={() => setFormModalOpen(true)}>
+            + Add New Loan
+          </button>
+        </header>
+
         {error && <p className="error-message">{error}</p>}
-        <div className="loans-grid">
-          {loans && loans.length > 0 ? (
-            loans.map((loan) => (
-              <InfoCard
-                key={loan._id}
-                title={loan.loanName}
-                primaryStats={[
-                  {
-                    label: "Remaining",
-                    value: new Intl.NumberFormat("en-IN", {
-                      style: "currency",
-                      currency: "INR",
-                    }).format(loan.totalAmount - loan.amountPaid),
-                  },
-                  {
-                    label: "Monthly EMI",
-                    value: new Intl.NumberFormat("en-IN", {
-                      style: "currency",
-                      currency: "INR",
-                    }).format(loan.emi),
-                  },
-                ]}
-                progress={(loan.amountPaid / loan.totalAmount) * 100}
-                details={[
-                  { label: "Lender", value: loan.lender },
-                  {
-                    label: "Interest Rate",
-                    value: `${loan.interestRate}% p.a.`,
-                  },
-                  {
-                    label: "End Date",
-                    value: new Date(loan.endDate).toLocaleDateString(),
-                  },
-                ]}
-              />
-            ))
-          ) : (
-            <div className="empty-state">
-              <p>You have no active loans. Congratulations!</p>
+        
+        <section className="page-section">
+            <LoanSummary loans={loans} />
+        </section>
+
+        <section className="page-section">
+            <h3>Your Active Loans</h3>
+            <div className="loans-grid">
+                {loans && loans.length > 0 ? (
+                    loans.map((loan) => (
+                        // --- Use the new LoanCard component ---
+                        <LoanCard key={loan._id} loan={loan} />
+                    ))
+                ) : (
+                    <div className="empty-state">
+                        <p>You have no active loans. Congratulations!</p>
+                    </div>
+                )}
             </div>
-          )}
-        </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 };
 
 export default LoansPage;
-//-------- End: Version V3.0.0---------//

@@ -1,0 +1,28 @@
+/* Styles for IncomeSummary.css */
+.income-summary-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.total-income-card,
+.income-chart-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+.stat-value {
+  display: block;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+.income-chart-card h4 {
+  margin: 0 0 1rem;
+}

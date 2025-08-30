@@ -2,9 +2,8 @@
 
 // --- Core Imports ---
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
-// We import AuthContext to access the user's authentication token.
-// This ensures that we only try to fetch data when the user is actually logged in.
+// import axios from "axios";
+import api from "@/utils/api";
 import { AuthContext } from "./AuthContext";
 
 // --- Context Creation ---
@@ -24,17 +23,13 @@ const DataProvider = ({ children }) => {
 
   // State for each type of data we need to manage across the app.
   const [user, setUser] = useState(null); // Holds the logged-in user's profile.
-  const [summary, setSummary] = useState(null); // Holds the monthly financial summary.
-  const [transactions, setTransactions] = useState([]); // Holds the list of all transactions.
-  const [goals, setGoals] = useState([]); // Holds the list of financial goals.
-  const [loans, setLoans] = useState([]); // Holds the list of loans.
-  const [investments, setInvestments] = useState([]); // Holds the list of investments.
-  const [commitments, setCommitments] = useState([]); // New state for recurring commitments.
-  // ===================================================================
-  // == UPDATE: 2025-08-23 | Add Income Source Feature ==
-  // This new state will hold the list of the user's recurring income sources.
+  const [summary, setSummary] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [loans, setLoans] = useState([]);
+  const [investments, setInvestments] = useState([]);
+  const [commitments, setCommitments] = useState([]);
   const [incomeSources, setIncomeSources] = useState([]);
-  // ===================================================================
 
   const [loading, setLoading] = useState(true); // Tracks if the initial data fetch is in progress.
   const [error, setError] = useState(""); // Stores any errors that occur during data fetching.
@@ -62,24 +57,17 @@ const DataProvider = ({ children }) => {
         goalsRes,
         loansRes,
         investmentsRes,
-        commitmentsRes, // Added the new commitments API call
-        // ===================================================================
-        // == UPDATE: 2025-08-23 | Add Income Source Feature ==
-        incomeSourcesRes, // Variable for the new API call's response.
-        // ===================================================================
+        commitmentsRes,
+        incomeSourcesRes,
       ] = await Promise.all([
-        axios.get("http://localhost:3001/api/users/profile"),
-        axios.get("http://localhost:3001/api/transactions/monthly-summary"),
-        axios.get("http://localhost:3001/api/transactions"),
-        axios.get("http://localhost:3001/api/goals"),
-        axios.get("http://localhost:3001/api/loans"),
-        axios.get("http://localhost:3001/api/investments"),
-        axios.get("http://localhost:3001/api/commitments"), // New API call
-        // ===================================================================
-        // == UPDATE: 2025-08-23 | Add Income Source Feature ==
-        // This new line adds the API call to fetch our recurring income sources.
-        axios.get("http://localhost:3001/api/income-sources"),
-        // ===================================================================
+        api.get("http://localhost:3001/api/users/profile"),
+        api.get("http://localhost:3001/api/transactions/monthly-summary"),
+        api.get("http://localhost:3001/api/transactions"),
+        api.get("http://localhost:3001/api/goals"),
+        api.get("http://localhost:3001/api/loans"),
+        api.get("http://localhost:3001/api/investments"),
+        api.get("http://localhost:3001/api/commitments"),
+        api.get("http://localhost:3001/api/income-sources"),
       ]);
 
       // Once all requests are successful, we update our state with the data from the responses.
@@ -89,12 +77,8 @@ const DataProvider = ({ children }) => {
       setGoals(goalsRes.data);
       setLoans(loansRes.data);
       setInvestments(investmentsRes.data);
-      setCommitments(commitmentsRes.data); // Set the new state
-      // ===================================================================
-      // == UPDATE: 2025-08-23 | Add Income Source Feature ==
-      // This new line sets our new incomeSources state with the fetched data.
+      setCommitments(commitmentsRes.data);
       setIncomeSources(incomeSourcesRes.data);
-      // ===================================================================
 
       setError(""); // Clear any previous errors.
     } catch (err) {
@@ -126,13 +110,8 @@ const DataProvider = ({ children }) => {
     goals,
     loans,
     investments,
-    commitments, // Provide commitments to the rest of the app
-    // ===================================================================
-    // == UPDATE: 2025-08-23 | Add Income Source Feature ==
-    // We now provide the incomeSources data to the rest of the application.
+    commitments,
     incomeSources,
-    // ===================================================================
-
     loading,
     error,
     // We also provide the `fetchData` function itself. This allows any component

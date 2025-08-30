@@ -1,0 +1,135 @@
+/* client/src/features/expenses/FixedExpensesPage.css */
+
+/* --- Page Layout & Header --- */
+.expenses-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem;
+}
+.page-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+}
+.add-expense-btn {
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.page-section {
+  margin-bottom: 2.5rem;
+}
+
+/* --- FixedExpenseSummary Styles --- */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.stat-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+.stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+}
+.stat-subvalue {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* --- FixedExpenseList Styles --- */
+.list-container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.list-container h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+}
+.table-container {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+th {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+td .amount {
+  font-weight: 600;
+  color: #ef4444;
+}
+
+/* --- FixedExpenseForm Styles --- */
+.expense-form-container {
+  padding: 1rem;
+}
+.expense-form-container h3 {
+  text-align: center;
+  margin: 0 0 2rem;
+}
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.form-submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4f46e5;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}

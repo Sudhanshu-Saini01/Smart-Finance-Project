@@ -1,0 +1,36 @@
+/* client/src/features/investments/components/InvestmentHoldingsList/InvestmentHoldingsList.css */
+.holdings-container h3 {
+  font-size: 1.25rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+.table-container {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+th {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+td .amount {
+  font-weight: 500;
+}
+.type-pill {
+  background-color: #eef2ff;
+  color: #4338ca;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}

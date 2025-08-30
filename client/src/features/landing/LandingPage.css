@@ -1,0 +1,507 @@
+/* client/src/features/landing/LandingPage.css */
+
+.landing-page {
+  font-family: "Inter", sans-serif; /* A clean, modern font */
+}
+
+/* --- Hero Section Styling --- */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  background: linear-gradient(
+    45deg,
+    /* #023e7d, */ #0353a4,
+    #6a82fb
+  ); /* A nice blue gradient */
+  height: 50vh; /* Takes up 60% of the viewport height */
+  padding: 0 2rem;
+  border-bottom-left-radius: 80px; /* A subtle curve */
+}
+
+.hero-content {
+  max-width: 800px; /* Keeps content from getting too wide on large screens */
+}
+
+.hero-content h1 {
+  font-size: 3.5rem; /* Large, impactful headline */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* --- Call to Action (CTA) Button Styling --- */
+.cta-button {
+  background-color: #ffffff;
+  color: #4c68d7; /* Blue text to match the background */
+  padding: 1rem 2.5rem;
+  border-radius: 50px; /* Pill-shaped button */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+  transform: translateY(-3px); /* A subtle lift on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* client/src/features/landing/LandingPage.css */
+
+/* --- Features Section Styling --- */
+.features-section {
+  padding: 4rem 2rem; /* Add some space around the section */
+  max-width: 1200px;
+  margin: 0 auto; /* Center the section on the page */
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 3rem; /* Space between text and image */
+  margin-bottom: 4rem; /* Space between each feature block */
+}
+
+/* Style for the alternating layout */
+.feature-item.reverse {
+  flex-direction: row-reverse;
+}
+
+.feature-text {
+  flex: 1; /* Allows the text block to take up available space */
+}
+
+.feature-text h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.feature-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+}
+
+.feature-image {
+  flex: 1;
+}
+
+.feature-image img {
+  width: 100%;
+  border-radius: 12px; /* Soft rounded corners for the images */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* client/src/features/landing/LandingPage.css */
+
+/* --- Final Call to Action Section Styling --- */
+.final-cta-section {
+  background: linear-gradient(
+    45deg,
+    #434343,
+    #000000
+  ); /* A dark, premium gradient */
+  color: #ffffff;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.final-cta-section h2 {
+  font-size: 2.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.final-cta-section p {
+  font-size: 1.2rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.8;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* We can reuse the same .cta-button style, but let's make it pop more on the dark background */
+.final-cta-section .cta-button {
+  background-color: #6a82fb; /* Use our primary blue */
+  color: #ffffff;
+  transform: scale(1.1); /* Make it slightly bigger */
+}
+
+.final-cta-section .cta-button:hover {
+  background-color: #4c68d7;
+  transform: scale(1.15) translateY(-3px); /* Enhance the hover effect */
+}
+
+/* Add to end of LandingPage.css */
+.know-more-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #4c68d7;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+.know-more-link:hover {
+  transform: translateX(5px);
+}
+
+/* Add to end of LandingPage.css */
+
+/* --- Demo Popup Button Styling --- */
+.demo-popup-button {
+  position: fixed; /* Floats on top of the page */
+  bottom: 20px;
+  right: 20px;
+  background-color: #4c68d7;
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 999; /* Ensures it's above other content but below the modal */
+  transition: all 0.3s ease;
+}
+
+.demo-popup-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Transaction Detail View (inside Modal) Styling --- */
+.transaction-detail-view h3 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.transaction-detail-view ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transaction-detail-view li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.transaction-detail-view li:last-child {
+  border-bottom: none;
+}
+
+.transaction-detail-view span {
+  color: #555;
+}
+
+.transaction-detail-view strong {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Reusing some styles from the main app for consistency */
+.type-pill {
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  text-transform: capitalize;
+}
+
+.type-pill.expense {
+  background-color: #ef4444;
+}
+.type-pill.income {
+  background-color: #22c55e;
+}
+
+.amount.expense {
+  color: #ef4444;
+}
+.amount.income {
+  color: #22c55e;
+}
+
+/* Add to end of LandingPage.css */
+
+/* --- Advanced Transaction View (inside Modal) --- */
+.adv-transaction-view {
+  font-family: "Inter", sans-serif;
+}
+
+.adv-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.adv-icon-wrapper {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b5563;
+}
+
+.adv-title {
+  flex-grow: 1;
+}
+
+.adv-title h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+  color: #111827;
+}
+
+.adv-title p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.adv-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.adv-amount.expense {
+  color: #ef4444;
+}
+.adv-amount.income {
+  color: #22c55e;
+}
+
+.adv-body {
+  padding-top: 1.5rem;
+}
+
+.adv-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.adv-detail-item:last-child {
+  margin-bottom: 0;
+}
+
+.adv-detail-item span {
+  color: #6b7280;
+}
+
+.adv-detail-item strong {
+  color: #111827;
+  font-weight: 500;
+}
+
+/* --- NEW: Styling for BOTH Demo Buttons --- */
+.demo-button {
+  position: fixed;
+  right: 20px;
+  background-color: #4c68d7;
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+.demo-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Positioning for each button */
+.demo-button.transaction-detail {
+  bottom: 20px;
+}
+.demo-button.add-form {
+  bottom: 90px;
+} /* Positioned above the other button */
+
+/* --- Advanced Transaction View Styles (No Changes) --- */
+.adv-transaction-view {
+  font-family: "Inter", sans-serif;
+}
+.adv-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.adv-icon-wrapper {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b5563;
+}
+.adv-title {
+  flex-grow: 1;
+}
+.adv-title h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem;
+  color: #111827;
+}
+.adv-title p {
+  margin: 0;
+  color: #6b7280;
+}
+.adv-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.adv-amount.expense {
+  color: #ef4444;
+}
+.adv-amount.income {
+  color: #22c55e;
+}
+.adv-body {
+  padding-top: 1.5rem;
+}
+.adv-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.adv-detail-item:last-child {
+  margin-bottom: 0;
+}
+.adv-detail-item span {
+  color: #6b7280;
+}
+.adv-detail-item strong {
+  color: #111827;
+  font-weight: 500;
+}
+.type-pill {
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+  text-transform: capitalize;
+}
+.type-pill.expense {
+  background-color: #ef4444;
+}
+.type-pill.income {
+  background-color: #22c55e;
+}
+
+/* --- Dynamic Add Form Styles (No Changes) --- */
+.add-form-container {
+  padding: 1rem;
+}
+.add-form-container h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: #111827;
+}
+.form-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.type-card:hover {
+  border-color: #4c68d7;
+  background-color: #f4f7ff;
+  color: #4c68d7;
+}
+.type-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+.type-icon {
+  font-size: 2rem;
+}
+.form-back-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.form-submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4c68d7;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.form-submit-btn:hover {
+  background-color: #3a50a3;
+}

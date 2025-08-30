@@ -1,0 +1,64 @@
+/* client/src/features/income/components/IncomeCard/IncomeCard.css */
+.income-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+.card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.income-type-pill {
+  background-color: #e0e7ff;
+  color: #4338ca;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.income-row {
+  display: flex;
+  justify-content: space-between;
+}
+.income-row span {
+  color: #6b7280;
+}
+.income-row .amount.gross {
+  color: #374151;
+}
+.income-row .amount.deductions {
+  color: #ef4444;
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0fdf4;
+  padding: 1rem 1.5rem;
+  border-top: 2px solid #bbf7d0;
+}
+.card-footer span {
+  font-weight: 500;
+  color: #15803d;
+}
+.card-footer .amount.net {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #15803d;
+}

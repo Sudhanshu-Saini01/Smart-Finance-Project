@@ -1,0 +1,37 @@
+/* client/src/features/investments/components/InvestmentOverview/InvestmentOverview.css */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.stat-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+.stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+}
+.stat-percent {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+.stat-card.profit .stat-value,
+.stat-card.profit .stat-percent {
+  color: #16a34a;
+}
+.stat-card.loss .stat-value,
+.stat-card.loss .stat-percent {
+  color: #dc2626;
+}

@@ -1,0 +1,76 @@
+/* client/src/features/transactions/components/TransactionForm/TransactionForm.css */
+.transaction-form-container {
+  font-family: 'Inter', sans-serif;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+}
+
+/* Specific styling for the main dropdown */
+#commitment-select {
+  font-weight: 600;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+/* Styling for the read-only auto-filled fields */
+.form-group input:read-only {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+}
+
+.form-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5rem 0;
+}
+
+.form-submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color, #4f46e5); /* Use variable from page if available */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-submit-btn:hover {
+  background-color: #4338ca;
+}
+
+.form-submit-btn:disabled {
+  background-color: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.form-message {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 500;
+  color: #16a34a; /* Green for success */
+}

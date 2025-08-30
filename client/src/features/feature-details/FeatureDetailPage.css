@@ -1,0 +1,133 @@
+/* client/src/features/feature-details/FeatureDetailPage.css */
+
+.feature-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.feature-hero {
+  padding: 3rem 0;
+}
+
+.feature-hero h1 {
+  font-size: 3rem;
+  color: #333;
+}
+
+.feature-hero .feature-subtitle {
+  font-size: 1.25rem;
+  color: #555;
+  margin-top: 0.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.feature-highlights {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 3rem;
+}
+
+.highlight-card {
+  background-color: #f4f7ff;
+  color: #4c68d7;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 500;
+}
+
+.feature-visual img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+}
+
+/* --- NEW: Key Features Grid Styling --- */
+.key-features-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.key-features-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 2.5rem;
+  color: #333;
+}
+
+.key-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates a 2-column grid */
+  gap: 2rem;
+  text-align: left;
+}
+
+.key-feature-card {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.key-feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.key-feature-card p {
+  line-height: 1.6;
+  color: #555;
+}
+/* --- END OF NEW STYLING --- */
+
+.feature-description {
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.feature-description h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.feature-description p {
+  line-height: 1.7;
+  color: #444;
+}
+
+.cta-button-feature {
+  display: inline-block;
+  background-color: #6a82fb;
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.cta-button-feature:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.back-link {
+  display: block; /* On its own line */
+  margin-top: 1rem;
+  color: #4c68d7;
+  text-decoration: none;
+  font-weight: 600;
+}

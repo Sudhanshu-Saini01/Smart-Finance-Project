@@ -1,0 +1,101 @@
+/* client/src/features/expenses/VariableExpensesPage.css */
+
+/* --- Page Layout & Header --- */
+.expenses-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+.page-header h1 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem;
+}
+.page-header p {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin: 0;
+}
+.add-expense-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+.page-section {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+/* --- SpendingChart Styles --- */
+.chart-container {
+  width: 100%;
+}
+.chart-container h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+}
+.recharts-tooltip-wrapper {
+  outline: none;
+}
+.recharts-default-tooltip {
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- RecentTransactions Styles --- */
+.list-container h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+}
+.list-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.transaction-item:last-child {
+  border-bottom: none;
+}
+.item-details {
+  display: flex;
+  flex-direction: column;
+}
+.item-details strong {
+  font-weight: 600;
+  color: #1f2937;
+}
+.item-details span {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.item-amount {
+  text-align: right;
+}
+.item-amount strong {
+  font-weight: 600;
+  color: #ef4444;
+}
+.item-amount span {
+  font-size: 0.9rem;
+  color: #6b7280;
+}

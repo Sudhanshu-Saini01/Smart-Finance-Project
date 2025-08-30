@@ -1,0 +1,66 @@
+/* client/src/components/ui/Modal/Modal.css */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(10, 20, 40, 0.4); /* A darker, more premium overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  /* --- The Glassmorphism Effect --- */
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+  padding: 2rem;
+  border-radius: 16px; /* Softer, more modern corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 450px; /* A slightly slimmer profile */
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  /* --- The New Entrance Animation --- */
+  animation: slideUpFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #e5e7eb; /* A subtle background circle */
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 32px; /* Vertically center the 'X' */
+  text-align: center;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-button:hover {
+  background-color: #d1d5db;
+  transform: rotate(90deg); /* A nice micro-interaction */
+}
+
+/* --- New Animation Keyframes --- */
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

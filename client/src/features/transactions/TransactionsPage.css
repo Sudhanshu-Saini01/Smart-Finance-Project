@@ -1,18 +1,14 @@
-/* client/src/pages/TransactionsPage.css */
+/* client/src/features/transactions/TransactionsPage.css */
 
-/*
-  CSS variables are used here to create a consistent and easily customizable theme
-  for the entire transactions page.
-*/
 :root {
-  --page-background: #f9fafb; /* A very light grey for the page background */
+  --page-background: #f9fafb;
   --section-background: #ffffff;
   --border-color: #e5e7eb;
   --shadow-color: rgba(0, 0, 0, 0.05);
   --text-primary: #1f2937;
   --text-secondary: #4b5563;
   --primary-color: #4f46e5;
-  --border-radius: 12px; /* A slightly larger radius for a modern look */
+  --border-radius: 12px;
   --income-color: #16a34a;
   --income-background: #f0fdf4;
   --expense-color: #dc2626;
@@ -20,179 +16,101 @@
 }
 
 .transactions-page-container {
-  max-width: 1200px;
+  max-width: 1200px; /* Wider for a better two-column experience */
   margin: 0 auto;
   padding: 2rem;
   background-color: var(--page-background);
 }
 
-.transactions-page-container h1 {
-  font-size: 2rem; /* 32px */
+/* --- NEW: Header Styling --- */
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.transactions-header h1 {
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
+}
+.transactions-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+/* --- NEW: Two-Column Grid Layout --- */
+.transactions-content-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .transactions-content-grid {
+    grid-template-columns: 2fr 1fr; /* Two columns on desktop */
+  }
+}
+
+.transactions-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.transactions-sidebar-column {
+  position: sticky;
+  top: 80px; /* Adjust based on your navbar height */
+}
+/* --- END OF NEW LAYOUT STYLES --- */
+
+.transactions-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Space between sections */
 }
 
 .transaction-section {
   background: var(--section-background);
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px var(--shadow-color);
-  margin-bottom: 2.5rem; /* 40px */
 }
 
 .transaction-section h3 {
   margin-top: 0;
-  margin-bottom: 1.5rem; /* 24px */
-  font-size: 1.25rem; /* 20px */
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-/*
-  NEW: This grid is used to place the "Add Transaction" and "Upcoming Payments"
-  sections side-by-side on wider screens for a more compact layout.
-  You will need to wrap these two sections in a div with this class in your JSX file.
-*/
-.actions-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* Default to a single column on mobile */
-  gap: 2.5rem;
-}
 
-/* On screens wider than 1024px, the grid will switch to two columns. */
-@media (min-width: 1024px) {
-  .actions-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* Add to the end of TransactionsPage.css */
 
-.table-container {
-  overflow-x: auto; /* Ensures table is scrollable on small screens */
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 1rem 1.5rem; /* 16px 24px */
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-  white-space: nowrap;
-  color: var(--text-secondary);
-}
-
-thead th {
-  background-color: var(--page-background);
-  font-weight: 600;
-  font-size: 0.75rem; /* 12px */
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-}
-
-tbody tr {
-  transition: background-color 0.2s ease;
-}
-
-tbody tr:hover {
-  background-color: #f9fafb;
-}
-
-.type-pill {
-  padding: 4px 12px;
-  border-radius: 9999px; /* Creates a perfect pill shape */
-  font-size: 0.75rem; /* 12px */
-  font-weight: 500;
-  text-transform: capitalize;
-}
-
-.type-pill.income {
-  background-color: var(--income-background);
-  color: var(--income-color);
-}
-
-.type-pill.expense {
-  background-color: var(--expense-background);
-  color: var(--expense-color);
-}
-
-.amount {
-  font-weight: 600;
-}
-
-.amount.income {
-  color: var(--income-color);
-}
-
-.amount.expense {
-  color: var(--expense-color);
-}
-
-/*
-  UPDATE: The month separator is now a solid bar with bold text,
-  making it much easier to distinguish between different months in the transaction history.
-*/
-.month-group {
-  background-color: var(--section-background);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
-  overflow: hidden;
 }
 
-.month-separator {
-  margin: 0 0 1.5rem 0;
-  padding: 1rem 1rem;
-  border-bottom: 1px solid var(--border-color);
-  background-color: #e5e6ea; /* A light grey background */
-
-  /* border-radius: 8px; */
-  color: var(--text-primary);
-  font-size: 1.125rem; /* 18px */
-  font-weight: 700; /* Bolder text */
-}
-
-.month-separator:first-of-type {
-  margin-top: 0;
-}
-
-/*
-  UPDATE: The simulator section now has a max-width and is centered,
-  preventing it from becoming too wide on large screens.
-*/
-.date-simulator {
-  border: 1px dashed var(--primary-color);
-  background-color: rgba(79, 70, 229, 0.05);
-  max-width: 500px; /* Prevents the section from being overly wide */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.date-simulator .form-group {
-  max-width: 100%;
-}
-
-.load-more-btn {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  border: 1px solid var(--border-color);
+.add-transaction-btn {
+  background-color: var(--primary-color, #4f46e5);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  background-color: var(--section-background);
-  color: var(--primary-color);
-  font-size: 1rem;
   font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2);
 }
 
-.load-more-btn:hover {
-  background-color: var(--primary-color);
-  color: #ffffff;
+.add-transaction-btn:hover {
+  background-color: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
 }

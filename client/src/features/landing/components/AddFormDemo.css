@@ -1,0 +1,82 @@
+/* client/src/features/landing/components/AddFormDemo.css */
+
+.add-form-container {
+  padding: 1rem;
+}
+.add-form-container h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: #111827;
+}
+.form-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.type-card:hover {
+  border-color: #4c68d7;
+  background-color: #f4f7ff;
+  color: #4c68d7;
+}
+.type-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+.type-icon {
+  font-size: 2rem;
+}
+.form-back-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.form-submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #4c68d7;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.form-submit-btn:hover {
+  background-color: #3a50a3;
+}

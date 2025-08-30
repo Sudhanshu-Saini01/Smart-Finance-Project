@@ -54,6 +54,19 @@ const DashboardPage = () => {
           })}
           .
         </p>
+        {/* --- TEMPORARY TEST CODE --- */}
+        <h3>Monthly Summary Data:</h3>
+        <pre
+          style={{
+            backgroundColor: "#f4f4f4",
+            padding: "1rem",
+            borderRadius: "8px",
+            border: "1px solid #ddd",
+          }}
+        >
+          {JSON.stringify(summary, null, 2)}
+        </pre>
+        {/* --- END OF TEST CODE --- */}
       </div>
 
       {/* Display an error message if data fetching failed. */}
