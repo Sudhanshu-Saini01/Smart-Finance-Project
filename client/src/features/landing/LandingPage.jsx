@@ -7,6 +7,12 @@ import Modal from "@/components/ui/Modal/Modal";
 // --- NEW: Import our clean, extracted component ---
 import AddFormDemo from "./components/AddFormDemo";
 
+// --- NEW: Import images like modules ---
+import dashboardImage from "@/assets/dashboard.jpg";
+import transactionImage from "@/assets/transaction.png";
+import investmentImage from "@/assets/investment.png";
+import insuranceImage from "@/assets/insurance.jpg";
+
 // --- Sample Data for the Demo ---
 const sampleTransaction = {
   date: "2025-08-28T10:00:00.000Z",
@@ -55,7 +61,8 @@ const LandingPage = () => {
           <div className="feature-image">
             <img
               //   src="https://placehold.co/600x400/6a82fb/ffffff?text=Unified+Dashboard"
-              src="src/assets/dashboard.jpg"
+              // src="src/assets/dashboard.jpg"
+              src={dashboardImage}
               alt="Dashboard Preview"
             />
           </div>
@@ -77,7 +84,8 @@ const LandingPage = () => {
           <div className="feature-image">
             <img
               //   src="https://placehold.co/600x400/4c68d7/ffffff?text=Track+Spending"
-              src="src/assets/transaction.png"
+              // src="src/assets/transaction.png"
+              src={transactionImage}
               alt="Track Spending Preview"
             />
           </div>
@@ -99,7 +107,8 @@ const LandingPage = () => {
           <div className="feature-image">
             <img
               //   src="https://placehold.co/600x400/6a82fb/ffffff?text=Grow+Your+Wealth"
-              src="src/assets/investment.png"
+              // src="src/assets/investment.png"
+              src={investmentImage}
               alt="Grow Wealth Preview"
             />
           </div>
@@ -121,7 +130,8 @@ const LandingPage = () => {
           <div className="feature-image">
             <img
               //   src="https://placehold.co/600x400/4c68d7/ffffff?text=Manage+Liabilities"
-              src="src/assets/insurance.jpg"
+              // src="src/assets/insurance.jpg"
+              src={insuranceImage}
               alt="Manage Liabilities Preview"
             />
           </div>
