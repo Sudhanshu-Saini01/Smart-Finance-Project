@@ -4,6 +4,12 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import "./FeatureDetailPage.css";
 
+// --- NEW: Import images like modules ---
+import dashboardImage from "@/assets/dashboard.jpg";
+import transactionImage from "@/assets/transaction.png";
+import investmentImage from "@/assets/investment.png";
+import insuranceImage from "@/assets/insurance.jpg";
+
 // In a real app, this content would come from a database or a content file.
 // For now, we'll hardcode it for our "Dashboard" example.
 const featureContent = {
@@ -18,7 +24,8 @@ const featureContent = {
     ],
     imageUrl:
       //   "https://placehold.co/800x450/6a82fb/ffffff?text=Dashboard+Screenshot",
-      "../src/assets/dashboard.jpg",
+      // "../src/assets/dashboard.jpg",
+      { dashboardImage },
     description:
       "The dashboard is the heart of WellPay. It's the first thing you see when you log in, designed to give you instant clarity. Track your net worth, see your spending trends, and check on your goal progress without ever having to dig through menus. We bring the most important information to the forefront so you can make smarter financial decisions, faster.",
     // --- NEW: Detailed breakdown of key features ---
@@ -55,7 +62,8 @@ const featureContent = {
       "Gain complete clarity on your spending habits with powerful, automated transaction tracking and categorization.",
     imageUrl:
       //   "https://placehold.co/800x450/4c68d7/ffffff?text=Transaction+History",
-      "../src/assets/transaction.png",
+      // "../src/assets/transaction.png",
+      { transactionImage },
     description:
       "Stop wondering where your money went. WellPay connects to your accounts to automatically import and categorize every transaction. Search, filter, and analyze your history to identify spending patterns, find areas to save, and take full control of your outgoings.",
     keyFeatures: [
@@ -89,7 +97,8 @@ const featureContent = {
     highlights: [],
     imageUrl:
       //   "https://placehold.co/800x450/6a82fb/ffffff?text=Grow+Your+Wealth",
-      "../src/assets/investment.png",
+      // "../src/assets/investment.png",
+      { investmentImage },
     description:
       "WellPay helps you build a strong financial foundation. Track every income source, create dedicated savings goals for things like vacations or emergencies, and keep a close eye on your investment portfolio's performance, all in one place.",
     keyFeatures: [
@@ -124,7 +133,8 @@ const featureContent = {
     highlights: [],
     imageUrl:
       //   "https://placehold.co/800x450/4c68d7/ffffff?text=Manage+Liabilities",
-      "../src/assets/insurance.jpg",
+      // "../src/assets/insurance.jpg",
+      { insuranceImage },
     description:
       "A healthy financial life isn't just about assets; it's also about managing your responsibilities. WellPay provides a centralized hub to track all your loans and insurance policies, giving you peace of mind.",
     keyFeatures: [
