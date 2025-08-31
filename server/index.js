@@ -83,6 +83,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path"; // Essential for serving the frontend in production
+import { fileURLToPath } from 'url';
 
 // --- Custom Module Imports ---
 import connectDB from "./config/db.js";
@@ -109,19 +110,23 @@ app.use("/api", allRoutes);
 // This section is crucial for deploying your full-stack application
 if (process.env.NODE_ENV === "production") {
   // Sets the correct directory for ES Modules
-  const __dirname = path.resolve();
+  // const __dirname = path.resolve();
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+
   // Serve the static 'dist' folder from the client build
   app.use(express.static(path.join(__dirname, "/client/dist")));
 
   // For any request that doesn't match an API route, send the client's index.html file.
   // This allows React Router to handle the frontend routing.
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
+    res.sendFile(path.resolve(__dirname, "../client", "dist", "index.html"))
   );
 } else {
   // In development, the root route just confirms the API is running
   app.get("/", (req, res) => {
-    res.json({ message: "Welcome to the WellPay API! 🚀" });
+    res.json({ message: "Welcome to the smart finance manager API! 🚀" });
   });
 }
 
