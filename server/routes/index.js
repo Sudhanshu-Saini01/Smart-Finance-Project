@@ -1,18 +1,18 @@
 // server/routes/index.js
 
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-// Import individual route files
-const userRoutes = require("./userRoutes");
-const incomeSourceRoutes = require("./incomeSourceRoutes");
-const loanRoutes = require("./loanRoutes");
-const investmentRoutes = require("./investmentRoutes");
-const goalRoutes = require("./goalRoutes");
-const transactionRoutes = require("./transactionRoutes");
-const commitmentRoutes = require("./commitmentRoutes");
+// Import individual route files using the 'import' syntax
+import userRoutes from "./userRoutes.js";
+import incomeSourceRoutes from "./incomeSourceRoutes.js";
+import loanRoutes from "./loanRoutes.js";
+import investmentRoutes from "./investmentRoutes.js";
+import goalRoutes from "./goalRoutes.js";
+import transactionRoutes from "./transactionRoutes.js";
+import commitmentRoutes from "./commitmentRoutes.js";
 
-// Mount the imported routes
+// Mount the imported routes (this part is unchanged)
 router.use("/users", userRoutes);
 router.use("/income-sources", incomeSourceRoutes);
 router.use("/loans", loanRoutes);
@@ -21,4 +21,5 @@ router.use("/goals", goalRoutes);
 router.use("/transactions", transactionRoutes);
 router.use("/commitments", commitmentRoutes);
 
-module.exports = router;
+// Use 'export default' for ES Modules
+export default router;

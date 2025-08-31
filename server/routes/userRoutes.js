@@ -1,13 +1,13 @@
 // server/routes/userRoutes.js
 
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const {
+import {
   registerUser,
   loginUser,
   getUserProfile,
-} = require("../controllers/userController");
-const { protect } = require("../middleware/authMiddleware"); // Import our guard
+} from "../controllers/userController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 console.log("✅ userRoutes.js file has been loaded by the server.");
 

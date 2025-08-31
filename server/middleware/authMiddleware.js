@@ -46,8 +46,8 @@
 // New 26.08.2025
 // server/middleware/authMiddleware.js
 
-const jwt = require("jsonwebtoken");
-const User = require("../models/User.js");
+import jwt from "jsonwebtoken";
+import User from "../models/User.js"; 
 
 const protect = async (req, res, next) => {
   let token;
