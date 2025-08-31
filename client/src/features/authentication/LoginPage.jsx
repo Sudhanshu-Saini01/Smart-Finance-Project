@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 import api from "@/utils/api"; // --- FIX #1: Import our central API client ---
-import "@/styles/auth.css"; // --- FIX #2: Ensure the CSS path is correct ---
+import "@/styles/Auth.css"; // --- FIX #2: Ensure the CSS path is correct ---
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
