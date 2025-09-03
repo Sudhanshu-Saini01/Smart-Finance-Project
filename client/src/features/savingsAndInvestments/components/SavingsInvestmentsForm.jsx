@@ -79,7 +79,7 @@ const SavingsInvestmentsForm = ({ prefilledGoal }) => {
         // This is the crucial link: if the form was pre-filled, we send the goal's ID to the server.
         linkedGoal: prefilledGoal ? prefilledGoal.id : null,
       };
-      await axios.post("http://smart-finance-project.onrender.com/api/recurrings", recurringData);
+      await axios.post("https://smart-finance-project.onrender.com/api/recurrings", recurringData);
       refetchData();
 
       // Reset the form fields after submission.
