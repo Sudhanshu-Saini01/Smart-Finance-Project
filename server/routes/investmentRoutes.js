@@ -1,11 +1,14 @@
 // server/routes/investmentRoutes.js
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
   getInvestments,
   createInvestment,
-} = require("../controllers/investmentController");
+} from "../controllers/investmentController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
-router.route("/").get(getInvestments).post(createInvestment);
+const router = express.Router();
 
-module.exports = router;
+// This line defines and protects both GET and POST routes for /api/investments
+router.route("/").get(protect, getInvestments).post(protect, createInvestment);
+
+export default router;

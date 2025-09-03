@@ -10,7 +10,7 @@ import {
 
 /**
  * @function groupAndSortPayments
- * @desc     Groups a list of payments (commitments or loans) by their due date
+ * @desc     Groups a list of payments (recurrings or loans) by their due date
  * into human-readable categories and sorts them chronologically.
  * @param    {Array} payments - An array of payment objects. Each object must have a `nextDueDate`.
  * @returns  {Object} An object where keys are date groups (like "Today", "This Week")

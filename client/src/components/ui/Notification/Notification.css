@@ -1,93 +1,56 @@
 /* client/src/components/ui/Notification/Notification.css */
-
-/*
-  This container positions the notification in the bottom-right corner of the screen
-  and ensures it stays there even when the user scrolls.
-*/
 .notification-container {
   position: fixed;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20000; /* Ensures it appears above all other content */
+  top: 80px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-
-/*
-  This is the main style for the notification "toast" itself.
-  It includes modern styling like shadows, borders, and a fade-in animation.
-*/
 .notification-toast {
-  width: 100%;
-  max-width: 380px;
-  background-color: var(--section-background);
-  border-radius: var(--border-radius);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--border-color);
-  border-left-width: 5px;
-  padding: 1.5rem;
-  animation: slideInDown 0.4s ease;
-  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #fff;
+  min-width: 320px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
 }
-
-/* --- Color Themes --- */
-/* These rules apply different left-border colors based on the notification type. */
 .notification-toast.success {
-  border-left-color: var(--income-color);
+  background-color: #16a34a;
 }
-
 .notification-toast.error {
-  border-left-color: var(--expense-color);
+  background-color: #dc2626;
 }
-
-.notification-content h4 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.notification-toast.info {
+  background-color: #2563eb;
 }
-
-.notification-content p {
+.toast-icon {
+  flex-shrink: 0;
+}
+.toast-message {
   margin: 0;
-  color: var(--text-secondary);
+  font-weight: 500;
+  flex-grow: 1;
 }
-
-/* --- Developer Details Section --- */
-.developer-details {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-
-.details-toggle {
+.toast-close-btn {
   background: none;
   border: none;
-  color: var(--primary-color);
-  font-weight: 500;
+  color: #fff;
+  opacity: 0.7;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 0;
-  font-size: 0.875rem;
 }
-
-.details-payload {
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: #374151;
-  white-space: pre-wrap; /* Ensures long lines wrap correctly */
-  word-break: break-all;
-}
-
-/* --- Animation --- */
-/* UPDATE: The keyframes have been changed to animate from the top. */
-@keyframes slideInDown {
+@keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateX(100%);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }

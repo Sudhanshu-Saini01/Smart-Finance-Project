@@ -6,7 +6,7 @@ import { DataContext } from "@/context/DataContext";
 
 /**
  * @component SavingsInvestmentsForm
- * @desc      A smart, dynamic form for creating and managing recurring commitments.
+ * @desc      A smart, dynamic form for creating and managing recurring recurrings.
  * It can be pre-filled from the Goals page or used directly.
  * @param {object} { prefilledGoal } - An object containing the ID and name of a goal to pre-fill the form with.
  */
@@ -68,10 +68,10 @@ const SavingsInvestmentsForm = ({ prefilledGoal }) => {
     setError("");
 
     try {
-      const commitmentData = {
-        commitmentName: name,
+      const recurringData = {
+        recurringName: name,
         amount: parseFloat(amount),
-        commitmentType: type,
+        recurringType: type,
         frequency: payment,
         startDate,
         endDate: endDate || null,
@@ -79,7 +79,7 @@ const SavingsInvestmentsForm = ({ prefilledGoal }) => {
         // This is the crucial link: if the form was pre-filled, we send the goal's ID to the server.
         linkedGoal: prefilledGoal ? prefilledGoal.id : null,
       };
-      await axios.post("http://localhost:3001/api/commitments", commitmentData);
+      await axios.post("http://localhost:3001/api/recurrings", recurringData);
       refetchData();
 
       // Reset the form fields after submission.
@@ -88,8 +88,8 @@ const SavingsInvestmentsForm = ({ prefilledGoal }) => {
       setEndDate("");
       setRoi("");
     } catch (err) {
-      console.error("Failed to create commitment", err);
-      setError("Failed to create commitment.");
+      console.error("Failed to create recurring", err);
+      setError("Failed to create recurring.");
     }
   };
 
@@ -181,7 +181,7 @@ const SavingsInvestmentsForm = ({ prefilledGoal }) => {
         </div>
       </div>
       <button type="submit" className="submit-btn full-width">
-        Create Commitment
+        Create Recurring
       </button>
     </form>
   );

@@ -6,12 +6,8 @@ import axios from "axios";
 import { DataContext } from "@/context/DataContext";
 import UniversalForm from "@/features/transactions/components/UniversalForm/UniversalForm";
 import GoalCard from "@/features/goals/components/GoalCard";
-import LinkCommitmentModal from "@/features/goals/components/LinkCommitmentModal";
-// ===================================================================
-// == UPDATE: 2025-08-24 | Replace Prompt with Modal ==
-// We now import our new choice modal.
+import LinkRecurringModal from "@/features/goals/components/LinkRecurringModal";
 import FundingChoiceModal from "@/features/goals/components/FundingChoiceModal";
-// ===================================================================
 import "./GoalsPage.css";
 
 const goalFormConfig = [
@@ -62,12 +58,8 @@ const GoalsPage = () => {
 
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [goalToLink, setGoalToLink] = useState(null);
-  // ===================================================================
-  // == UPDATE: 2025-08-24 | Replace Prompt with Modal ==
-  // New state to manage our new funding choice modal.
   const [isChoiceModalOpen, setIsChoiceModalOpen] = useState(false);
   const [newlyCreatedGoal, setNewlyCreatedGoal] = useState(null);
-  // ===================================================================
 
   const handleCreateGoal = async (formData) => {
     try {
@@ -120,8 +112,8 @@ const GoalsPage = () => {
 
   return (
     <>
-      {/* This is the modal for linking an existing commitment. */}
-      <LinkCommitmentModal
+      {/* This is the modal for linking an existing recurring. */}
+      <LinkRecurringModal
         isOpen={isLinkModalOpen}
         onClose={() => setIsLinkModalOpen(false)}
         goal={goalToLink}

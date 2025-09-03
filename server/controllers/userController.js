@@ -1,23 +1,32 @@
 // server/controllers/userController.js
-
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import { createSampleDataForUser } from "../utils/sampleDataHelper.js";
 
-// Helper function to generate JWT
+// A single, reliable list of special emails that will get sample data upon registration.
+const testUserEmails = [
+  "test1@example.com",
+  "test2@example.com",
+  "test3@example.com",
+];
+
+// Helper function to generate the JSON Web Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public
-const registerUser = async (req, res) => {
+/**
+ * @desc    Register a new user. If the email is a special test email,
+ * it also creates a full set of sample data for them.
+ * @route   POST /api/users/signup
+ * @access  Public
+ */
+const registerUser = async (req, res, next) => {
   const { name, email, password } = req.body;
   try {
     const userExists = await User.findOne({ email });
-
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -25,6 +34,14 @@ const registerUser = async (req, res) => {
     const user = await User.create({ name, email, password });
 
     if (user) {
+      // --- FINAL LOGIC ---
+      // Check if the newly registered user's email is in our special test list.
+      if (testUserEmails.includes(user.email)) {
+        // If it is, call our helper to create the full suite of sample data.
+        await createSampleDataForUser(user._id);
+      }
+      // --- END OF FINAL LOGIC ---
+
       res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -35,39 +52,21 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: "Invalid user data" });
     }
   } catch (error) {
-    next(error); // Pass the error to the error handling middleware)
-    // // res.status(500).json({ message: "Server error" });
+    next(error);
   }
 };
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
-const loginUser = async (req, res) => {
+/**
+ * @desc    Authenticate a user and get a token.
+ * @route   POST /api/users/login
+ * @access  Public
+ */
+const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-
-  // --- 🐞 DEBUGGING LOGS START 🐞 ---
-  console.log("--- LOGIN ATTEMPT ---");
-  console.log(`1. Received login request for email: ${email}`);
-  // --- 🐞 DEBUGGING LOGS END 🐞 ---
-
   try {
     const user = await User.findOne({ email }).select("+password");
 
-    // --- 🐞 DEBUGGING LOGS START 🐞 ---
-    if (!user) {
-      console.log("2. ❌ User not found in database.");
-    } else {
-      console.log(`2. ✅ User found: ${user.name}`);
-    }
-    // --- 🐞 DEBUGGING LOGS END 🐞 ---
-
     if (user && (await user.matchPassword(password))) {
-      // --- 🐞 DEBUGGING LOGS START 🐞 ---
-      console.log("3. ✅ Password is correct!");
-      console.log("----------------------");
-      // --- 🐞 DEBUGGING LOGS END 🐞 ---
-
       res.json({
         _id: user._id,
         name: user.name,
@@ -75,29 +74,22 @@ const loginUser = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      // --- 🐞 DEBUGGING LOGS START 🐞 ---
-      console.log("3. ❌ Password does NOT match.");
-      console.log("----------------------");
-      // --- 🐞 DEBUGGING LOGS END 🐞 ---
-
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
     next(error);
-    // console.error("LOGIN ERROR:", error); // Log the actual error on the server
-    // res.status(500).json({ message: "Server error" });
   }
 };
 
-// New 26.08.2025
-// --- Controller: Get User Profile ---
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
+/**
+ * @desc    Get the profile of the logged-in user.
+ * @route   GET /api/users/profile
+ * @access  Private
+ */
 const getUserProfile = async (req, res, next) => {
   try {
-    // The user object is attached to the request in the `protect` middleware
-    const user = req.user;
+    // The user object is attached to the request by our 'protect' middleware
+    const user = await User.findById(req.user.id);
 
     if (user) {
       res.json({
@@ -106,16 +98,12 @@ const getUserProfile = async (req, res, next) => {
         email: user.email,
       });
     } else {
-      res.status(404);
-      throw new Error("User not found");
+      res.status(404).send("User not found");
     }
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = {
-  registerUser,
-  loginUser,
-  getUserProfile,
-};
+// Use the modern ES Module export syntax
+export { registerUser, loginUser, getUserProfile };

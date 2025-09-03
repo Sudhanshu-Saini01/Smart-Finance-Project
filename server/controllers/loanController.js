@@ -1,34 +1,33 @@
 // server/controllers/loanController.js
-const Loan = require("../models/Loan");
+import Loan from "../models/Loan.js";
 
-// @desc    Get all loans
-// @route   GET /api/loans
-// @access  Private
-const getLoans = async (req, res) => {
+/**
+ * @desc    Get all loans for the logged-in user
+ * @route   GET /api/loans
+ * @access  Private
+ */
+export const getLoans = async (req, res, next) => {
   try {
-    const loans = await Loan.find().sort({ emiDate: 1 });
+    // SECURITY FIX: Only find loans for the current user
+    const loans = await Loan.find({ user: req.user.id });
     res.json(loans);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    next(err);
   }
 };
 
-// @desc    Create a new loan
-// @route   POST /api/loans
-// @access  Private
-const createLoan = async (req, res) => {
+/**
+ * @desc    Create a new loan for the logged-in user
+ * @route   POST /api/loans
+ * @access  Private
+ */
+export const createLoan = async (req, res, next) => {
   try {
-    const newLoan = new Loan(req.body);
+    // Create a new loan, automatically adding the logged-in user's ID
+    const newLoan = new Loan({ ...req.body, user: req.user.id });
     const loan = await newLoan.save();
     res.status(201).json(loan);
   } catch (err) {
-    console.error(err.message);
-    res.status(400).json({ msg: "Failed to create loan" });
+    next(err);
   }
-};
-
-module.exports = {
-  getLoans,
-  createLoan,
 };

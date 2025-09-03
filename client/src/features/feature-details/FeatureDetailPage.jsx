@@ -43,7 +43,7 @@ const featureContent = {
       {
         icon: "🔔",
         title: "Upcoming Bill Reminders",
-        text: "Never miss a payment again. The dashboard intelligently shows you which bills and commitments are due soon.",
+        text: "Never miss a payment again. The dashboard intelligently shows you which bills and recurrings are due soon.",
       },
       {
         icon: "💡",

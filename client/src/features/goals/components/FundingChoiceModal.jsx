@@ -1,8 +1,8 @@
 // client/src/features/goals/components/FundingChoiceModal.jsx
 
 import React from "react";
-// We can reuse the same CSS as the LinkCommitmentModal for a consistent style.
-import "./LinkCommitmentModal.css";
+// We can reuse the same CSS as the LinkRecurringModal for a consistent style.
+import "./LinkRecurringModal.css";
 
 /**
  * @component FundingChoiceModal

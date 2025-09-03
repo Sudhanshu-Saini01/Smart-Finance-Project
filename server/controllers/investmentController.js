@@ -1,34 +1,31 @@
 // server/controllers/investmentController.js
-const Investment = require("../models/Investment");
+import Investment from "../models/Investment.js";
 
-// @desc    Get all investments
-// @route   GET /api/investments
-// @access  Private
-const getInvestments = async (req, res) => {
+/**
+ * @desc    Get all investments for the logged-in user
+ * @route   GET /api/investments
+ * @access  Private
+ */
+export const getInvestments = async (req, res, next) => {
   try {
-    const investments = await Investment.find().sort({ startDate: -1 });
+    const investments = await Investment.find({ user: req.user.id });
     res.json(investments);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+    next(err);
   }
 };
 
-// @desc    Create a new investment
-// @route   POST /api/investments
-// @access  Private
-const createInvestment = async (req, res) => {
+/**
+ * @desc    Create a new investment for the logged-in user
+ * @route   POST /api/investments
+ * @access  Private
+ */
+export const createInvestment = async (req, res, next) => {
   try {
-    const newInvestment = new Investment(req.body);
+    const newInvestment = new Investment({ ...req.body, user: req.user.id });
     const investment = await newInvestment.save();
     res.status(201).json(investment);
   } catch (err) {
-    console.error(err.message);
-    res.status(400).json({ msg: "Failed to create investment" });
+    next(err);
   }
-};
-
-module.exports = {
-  getInvestments,
-  createInvestment,
 };

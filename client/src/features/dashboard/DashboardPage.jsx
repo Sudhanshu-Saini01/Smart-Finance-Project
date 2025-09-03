@@ -22,8 +22,8 @@ import "./Dashboard.css";
 const DashboardPage = () => {
   // --- State & Context Access ---
   const { user } = useContext(AuthContext);
-  // Get all financial data, including commitments and loans for the new component.
-  const { summary, transactions, commitments, loans, loading, error } =
+  // Get all financial data, including recurrings and loans for the new component.
+  const { summary, transactions, recurrings, loans, loading, error } =
     useContext(DataContext);
 
   // --- Conditional Rendering: Loading State ---
@@ -79,7 +79,7 @@ const DashboardPage = () => {
         </div>
         <div className="grid-item">
           {/* We now pass the required data to our reusable UpcomingPayments component. */}
-          <UpcomingPayments commitments={commitments} loans={loans} />
+          <UpcomingPayments recurrings={recurrings} loans={loans} />
         </div>
         <div className="grid-item">
           <h3>Monthly Overview</h3>

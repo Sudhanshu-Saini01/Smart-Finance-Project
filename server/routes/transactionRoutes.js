@@ -1,19 +1,25 @@
 // server/routes/transactionRoutes.js
-const express = require("express");
-const router = express.Router();
-const {
+import express from 'express';
+import {
   getTransactions,
   createTransaction,
-  getMonthlySummary,
-} = require("../controllers/transactionController");
+  updateTransaction,
+  deleteTransaction
+} from '../controllers/transactionController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
-console.log("✅ transactionRoutes.js file has been loaded by the server.");
+const router = express.Router();
 
-// --- NEW: Define the route for the monthly summary ---
-// This route must be defined BEFORE any routes with parameters like '/:id'
-router.get("/monthly-summary", getMonthlySummary);
+// This route handles getting all transactions and creating a new one.
+// Both actions are protected.
+router.route('/')
+  .get(protect, getTransactions)
+  .post(protect, createTransaction);
 
-// Existing routes for getting all transactions and creating one
-router.route("/").get(getTransactions).post(createTransaction);
+// This route handles updating and deleting a SINGLE transaction by its ID.
+// Both actions are protected.
+router.route('/:id')
+  .put(protect, updateTransaction)
+  .delete(protect, deleteTransaction);
 
-module.exports = router;
+export default router;

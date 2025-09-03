@@ -20,29 +20,29 @@
 //  * @component ExpensesBlueprint
 //  * @desc      Provides a breakdown of the user's monthly budget, separating
 //  * fixed costs from variable spending to guide their financial decisions.
-//  * @param {array} { commitments } - The user's list of recurring commitments (bills, SIPs, etc.).
+//  * @param {array} { recurrings } - The user's list of recurring recurrings (bills, SIPs, etc.).
 //  * @param {object} { summary } - The user's monthly financial summary.
 //  */
-// const ExpensesBlueprint = ({ commitments, summary }) => {
+// const ExpensesBlueprint = ({ recurrings, summary }) => {
 //   // If the necessary data isn't available yet, render nothing to avoid errors.
-//   if (!commitments || !summary || !summary.currentMonth) {
+//   if (!recurrings || !summary || !summary.currentMonth) {
 //     return null;
 //   }
 
 //   // --- Calculations ---
-//   // 1. Calculate total fixed expenses by summing the amounts of all recurring commitments.
+//   // 1. Calculate total fixed expenses by summing the amounts of all recurring recurrings.
 //   // This represents all the money that is already allocated for the month.
-//   // const fixedCosts = commitments.reduce((acc, com) => acc + com.amount, 0);
+//   // const fixedCosts = recurrings.reduce((acc, com) => acc + com.amount, 0);
 
 //   // --- Calculations ---
-//   // THE FIX IS HERE: We now filter the commitments to only include actual costs.
+//   // THE FIX IS HERE: We now filter the recurrings to only include actual costs.
 //   // This prevents recurring income from being subtracted from the total income.
-//   const fixedCosts = commitments
+//   const fixedCosts = recurrings
 //     .filter(
 //       (c) =>
-//         c.commitmentType === "expense" ||
-//         c.commitmentType === "savings" ||
-//         c.commitmentType === "investment"
+//         c.recurringType === "expense" ||
+//         c.recurringType === "savings" ||
+//         c.recurringType === "investment"
 //     )
 //     .reduce((acc, com) => acc + com.amount, 0);
 
@@ -95,21 +95,21 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const ExpensesBlueprint = ({ commitments, summary }) => {
+const ExpensesBlueprint = ({ recurrings, summary }) => {
   // --- THIS IS THE FIX ---
   // We now also check if summary.currentMonth exists before trying to use its data.
   // This prevents the component from crashing if the summary object is present but empty.
-  if (!commitments || !summary || !summary.currentMonth) {
+  if (!recurrings || !summary || !summary.currentMonth) {
     return null; // Render nothing if data is incomplete
   }
   // --- END OF FIX ---
 
-  const fixedCosts = commitments
+  const fixedCosts = recurrings
     .filter(
       (c) =>
-        c.commitmentType === "expense" ||
-        c.commitmentType === "savings" ||
-        c.commitmentType === "investment"
+        c.recurringType === "expense" ||
+        c.recurringType === "savings" ||
+        c.recurringType === "investment"
     )
     .reduce((acc, com) => acc + com.amount, 0);
 

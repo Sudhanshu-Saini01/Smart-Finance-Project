@@ -1,12 +1,15 @@
 // client/src/features/income/components/IncomeSourceForm/IncomeSourceForm.jsx
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { DataContext } from "@/context/DataContext";
+import { NotificationContext } from "@/context/NotificationContext";
 import api from "@/utils/api";
 import "./IncomeSourceForm.css";
 
-const IncomeSourceForm = ({ onClose }) => {
+const IncomeSourceForm = ({ editingSource, onClose }) => {
   const { refetchData } = useContext(DataContext);
+  const { addNotification } = useContext(NotificationContext);
+
   const [incomeType, setIncomeType] = useState("Salary"); // State to control the form type
   // Form data state is now more flexible
   const [formData, setFormData] = useState({
@@ -17,7 +20,33 @@ const IncomeSourceForm = ({ onClose }) => {
     frequency: "monthly",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
+
+  // This useEffect hook runs whenever the 'editingSource' prop changes.
+  useEffect(() => {
+    if (editingSource) {
+      // If we are editing, pre-fill the form with the existing data
+      setIncomeType(editingSource.incomeType);
+      setFormData({
+        sourceName: editingSource.sourceName,
+        grossAmount: editingSource.grossAmount,
+        netAmount: editingSource.netAmount,
+        amount:
+          editingSource.incomeType !== "Salary" ? editingSource.netAmount : "",
+        frequency: editingSource.frequency,
+      });
+    } else {
+      // If we are adding a new source, ensure the form is blank
+      setIncomeType("Salary");
+      setFormData({
+        sourceName: "",
+        grossAmount: "",
+        netAmount: "",
+        amount: "",
+        frequency: "monthly",
+      });
+    }
+  }, [editingSource]); // This effect depends on the editingSource prop
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +55,7 @@ const IncomeSourceForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setMessage("");
+    // setMessage("");
 
     // Construct the payload based on the income type
     const payload = {
@@ -39,12 +68,20 @@ const IncomeSourceForm = ({ onClose }) => {
     };
 
     try {
-      await api.post("/income-sources", payload);
-      setMessage("Income source added!");
+      if (editingSource) {
+        // If editing, send a PUT request to update the data
+        await api.put(`/income-sources/${editingSource._id}`, payload);
+        addNotification("Income source updated successfully!", "success");
+      } else {
+        // If creating, send a POST request
+        await api.post("/income-sources", payload);
+        addNotification("Income source added successfully!", "success");
+      }
       await refetchData();
-      setTimeout(() => onClose(), 1500);
+      onClose();
     } catch (err) {
-      setMessage("Error adding income source.", err);
+      const errorMessage = err.response?.data?.message || "An error occurred.";
+      addNotification(errorMessage, "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -52,7 +89,8 @@ const IncomeSourceForm = ({ onClose }) => {
 
   return (
     <div className="income-form-container">
-      <h3>Add New Income Source</h3>
+      {/* <h3>Add New Income Source</h3> */}
+      <h3>{editingSource ? "Edit Income Source" : "Add New Income Source"}</h3>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Income Type</label>
@@ -119,9 +157,14 @@ const IncomeSourceForm = ({ onClose }) => {
           className="form-submit-btn"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Saving..." : "Save Income Source"}
+          {/* {isSubmitting ? "Saving..." : "Save Income Source"} */}
+          {isSubmitting
+            ? "Saving..."
+            : editingSource
+            ? "Save Changes"
+            : "Save Income Source"}
         </button>
-        {message && <p className="form-message">{message}</p>}
+        {/* {message && <p className="form-message">{message}</p>} */}
       </form>
     </div>
   );

@@ -10,7 +10,7 @@
 // import "./TransactionsPage.css";
 
 // const TransactionsPage = () => {
-//   const { commitments, summary, loading } = useContext(DataContext);
+//   const { recurrings, summary, loading } = useContext(DataContext);
 //   const [isFormModalOpen, setFormModalOpen] = useState(false);
 
 //   if (loading) {
@@ -42,7 +42,7 @@
 //           {/* Monthly Blueprint is now at the top */}
 //           <section className="transaction-section">
 //             <h3>Monthly Blueprint</h3>
-//             <ExpensesBlueprint commitments={commitments} summary={summary} />
+//             <ExpensesBlueprint recurrings={recurrings} summary={summary} />
 //           </section>
 
 //           {/* Transaction History is below the blueprint */}
@@ -57,12 +57,11 @@
 
 // export default TransactionsPage;
 
-
 // client/src/features/transactions/TransactionsPage.jsx
 
 import React, { useState, useContext } from "react";
 import { DataContext } from "@/context/DataContext";
-import api from '@/utils/api';
+import api from "@/utils/api";
 import Modal from "@/components/ui/Modal/Modal";
 import TransactionForm from "./components/TransactionForm/TransactionForm";
 import TransactionHistory from "./components/TransactionHistory/TransactionHistory";
@@ -89,17 +88,17 @@ const TransactionsPage = () => {
       }
     }
   };
-  
+
   const handleCloseModal = () => {
     setFormModalOpen(false);
     setEditingTransaction(null);
   };
-  
+
   // --- NEW: This function will be passed to the empty state button ---
   const handleOpenAddModal = () => {
     setEditingTransaction(null); // Ensure we're not in edit mode
     setFormModalOpen(true);
-  }
+  };
 
   if (loading) {
     return <div className="loading-fullscreen">Loading Transactions...</div>;
@@ -108,9 +107,9 @@ const TransactionsPage = () => {
   return (
     <>
       <Modal isOpen={isFormModalOpen} onClose={handleCloseModal}>
-        <TransactionForm 
-          editingTransaction={editingTransaction} 
-          onClose={handleCloseModal} 
+        <TransactionForm
+          editingTransaction={editingTransaction}
+          onClose={handleCloseModal}
         />
       </Modal>
 
@@ -125,11 +124,11 @@ const TransactionsPage = () => {
             + Add Transaction
           </button>
         </header>
-        
+
         <div className="transactions-main-content">
           <section className="transaction-section">
-            <TransactionHistory 
-              onEdit={handleEdit} 
+            <TransactionHistory
+              onEdit={handleEdit}
               onDelete={handleDelete}
               onAddTransactionClick={handleOpenAddModal} // --- Pass the function down
             />

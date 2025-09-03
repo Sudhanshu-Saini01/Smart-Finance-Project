@@ -1,18 +1,13 @@
 // server/models/Loan.js
 
-// --- IMPORTS ---
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-// --- SCHEMA DEFINITION ---
-// This blueprint defines the structure for a user's loan record.
-// It's used to track debts, repayment progress, and key loan details.
 const loanSchema = new Schema(
   {
-    // --- Core Information ---
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User", // Establishes a direct link to the User model.
+      ref: "User",
       required: true,
     },
     loanName: {
@@ -30,14 +25,11 @@ const loanSchema = new Schema(
       enum: ["personal", "home", "vehicle", "education", "other"],
       default: "other",
     },
-    // Used for financial advisory logic to categorize the loan's purpose.
     assetType: {
       type: String,
       enum: ["appreciating", "depreciating", "neutral"],
       default: "neutral",
     },
-
-    // --- Financial Details ---
     totalAmount: {
       type: Number,
       required: true,
@@ -46,7 +38,6 @@ const loanSchema = new Schema(
       type: Number,
       default: 0,
     },
-    // Equated Monthly Installment (EMI).
     emi: {
       type: Number,
       required: true,
@@ -55,8 +46,6 @@ const loanSchema = new Schema(
       type: Number,
       required: true,
     },
-
-    // --- Timeline & Status ---
     startDate: {
       type: Date,
       required: true,
@@ -72,13 +61,11 @@ const loanSchema = new Schema(
     },
   },
   {
-    // --- OPTIONS ---
-    // Automatically adds `createdAt` and `updatedAt` fields.
     timestamps: true,
   }
 );
 
-// --- MODEL CREATION & EXPORT ---
-// Compiles the schema into a 'Loan' model for interacting with the database.
 const Loan = mongoose.model("Loan", loanSchema);
-module.exports = Loan;
+
+// Use the modern 'export default' syntax
+export default Loan;

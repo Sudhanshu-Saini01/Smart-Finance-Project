@@ -49,18 +49,18 @@ export const sampleData = {
       amount: 25000,
     },
   ],
-  commitments: [
+  recurrings: [
     {
       _id: "c1",
-      commitmentName: "Monthly Rent",
-      commitmentType: "expense",
+      recurringName: "Monthly Rent",
+      recurringType: "expense",
       amount: 20000,
       nextDueDate: "2025-09-05",
     },
     {
       _id: "c2",
-      commitmentName: "Phone Bill",
-      commitmentType: "expense",
+      recurringName: "Phone Bill",
+      recurringType: "expense",
       amount: 799,
       nextDueDate: "2025-09-15",
     },

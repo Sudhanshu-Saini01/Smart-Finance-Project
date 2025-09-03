@@ -1,8 +1,13 @@
 // server/routes/loanRoutes.js
-const express = require("express");
+import express from "express";
+import { getLoans, createLoan } from "../controllers/loanController.js";
+import { protect } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const { getLoans, createLoan } = require("../controllers/loanController");
 
-router.route("/").get(getLoans).post(createLoan);
+// This one line defines both routes and protects them.
+// GET requests to / will run getLoans.
+// POST requests to / will run createLoan.
+router.route("/").get(protect, getLoans).post(protect, createLoan);
 
-module.exports = router;
+export default router;

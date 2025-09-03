@@ -1,7 +1,7 @@
 // server/models/Investment.js
 
 // --- IMPORTS ---
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 // --- SCHEMA DEFINITION ---
@@ -59,4 +59,4 @@ const investmentSchema = new Schema(
 // --- MODEL CREATION & EXPORT ---
 // Compiles the schema into an 'Investment' model for interacting with the database.
 const Investment = mongoose.model("Investment", investmentSchema);
-module.exports = Investment;
+export default Investment;

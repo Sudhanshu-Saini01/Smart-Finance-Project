@@ -29,7 +29,9 @@ body {
 
 .main-content-area {
   flex-grow: 1;
-  padding-top: 10px; /* Space for the sticky navbar */
+  background-color: #f9fafb;
+  min-height: calc(100vh - 65px);
+  /* padding-top: 10px; Space for the sticky navbar */
 }
 
 .persistent-status-cards {

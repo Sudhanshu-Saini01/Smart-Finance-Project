@@ -12,7 +12,7 @@ import "./SavingsAndInvestmentsPage.css";
 
 const SavingsAndInvestmentsPage = () => {
   // --- FIX: Destructure 'loans' from context as well ---
-  const { commitments, loans, summary, loading } = useContext(DataContext);
+  const { recurrings, loans, summary, loading } = useContext(DataContext);
 
   const location = useLocation();
   const prefilledGoal = useMemo(() => {
@@ -29,8 +29,8 @@ const SavingsAndInvestmentsPage = () => {
     return <div className="loading-fullscreen">Loading Data...</div>;
   }
 
-  const portfolioItems = commitments.filter(
-    (c) => c.commitmentType === "savings" || c.commitmentType === "investment"
+  const portfolioItems = recurrings.filter(
+    (c) => c.recurringType === "savings" || c.recurringType === "investment"
   );
 
   return (
@@ -39,7 +39,7 @@ const SavingsAndInvestmentsPage = () => {
 
       <div className="si-section">
         <h3>Your Monthly Blueprint</h3>
-        <ExpensesBlueprint commitments={commitments} summary={summary} />
+        <ExpensesBlueprint recurrings={recurrings} summary={summary} />
       </div>
 
       <div className="si-section">
@@ -48,8 +48,8 @@ const SavingsAndInvestmentsPage = () => {
 
       <div className="si-section">
         <h3>Upcoming Payments</h3>
-        {/* --- FIX: Pass 'commitments' and 'loans' as props --- */}
-        <UpcomingPayments commitments={commitments} loans={loans} />
+        {/* --- FIX: Pass 'recurrings' and 'loans' as props --- */}
+        <UpcomingPayments recurrings={recurrings} loans={loans} />
       </div>
 
       <div className="si-section">
@@ -61,7 +61,7 @@ const SavingsAndInvestmentsPage = () => {
             ))
           ) : (
             <div className="empty-state">
-              <p>You have no savings or investment commitments set up.</p>
+              <p>You have no savings or investment recurrings set up.</p>
             </div>
           )}
         </div>

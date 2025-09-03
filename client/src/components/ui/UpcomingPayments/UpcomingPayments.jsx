@@ -4,9 +4,9 @@ import React from "react";
 import { groupAndSortPayments } from "@/utils/dateUtils";
 import "./UpcomingPayments.css";
 
-const UpcomingPayments = ({ commitments, loans }) => {
-  // Combine and process commitments and loans
-  const upcomingPayments = [...commitments, ...loans];
+const UpcomingPayments = ({ recurrings, loans }) => {
+  // Combine and process recurrings and loans
+  const upcomingPayments = [...recurrings, ...loans];
   const groupedPayments = groupAndSortPayments(upcomingPayments);
 
   const getStatusClass = (status) => {
@@ -18,10 +18,10 @@ const UpcomingPayments = ({ commitments, loans }) => {
     <li key={index} className="payment-item">
       <div className="payment-details">
         <span className="payment-name">
-          {item.commitmentName || item.loanName}
+          {item.recurringName || item.loanName}
         </span>
         <span className="payment-type">
-          {item.commitmentName ? "Commitment" : "Loan"}
+          {item.recurringName ? "Recurring" : "Loan"}
         </span>
       </div>
       <div className="payment-amount">

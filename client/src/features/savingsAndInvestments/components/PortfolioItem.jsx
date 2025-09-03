@@ -6,29 +6,29 @@ import "./PortfolioItem.css";
 
 /**
  * @component PortfolioItem
- * @desc      An interactive card for displaying a single savings or investment commitment.
+ * @desc      An interactive card for displaying a single savings or investment recurring.
  */
 const PortfolioItem = ({ item }) => {
   const { transactions } = React.useContext(DataContext);
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
 
-  // This logic finds all past transactions related to this specific commitment.
+  // This logic finds all past transactions related to this specific recurring.
   // `useMemo` is used for performance, so this calculation only runs when needed.
   const history = useMemo(() => {
     return transactions
-      .filter((t) => t.description === item.commitmentName)
+      .filter((t) => t.description === item.recurringName)
       .sort((a, b) => new Date(b.date) - new Date(a.date));
-  }, [transactions, item.commitmentName]);
+  }, [transactions, item.recurringName]);
 
   const totalContributed = history.reduce((acc, t) => acc + t.amount, 0);
 
   return (
-    <div className="info-card" data-type={item.commitmentType}>
+    <div className="info-card" data-type={item.recurringType}>
       <div className="info-card-header">
-        <h4>{item.commitmentName}</h4>
-        <span className={`type-pill ${item.commitmentType}`}>
-          {item.commitmentType}
+        <h4>{item.recurringName}</h4>
+        <span className={`type-pill ${item.recurringType}`}>
+          {item.recurringType}
         </span>
       </div>
       <div className="info-card-body">

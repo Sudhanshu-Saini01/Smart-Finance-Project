@@ -1,14 +1,11 @@
 // server/routes/goalRoutes.js
+import express from "express";
+import { getGoals, createGoal } from "../controllers/goalController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
-const express = require("express");
 const router = express.Router();
-const { getGoals, createGoal } = require("../controllers/goalController"); // Import the controller functions
 
-// --- Define the Routes ---
-// When a GET request comes to '/', use the getGoals controller.
-router.route("/").get(getGoals);
+// This line defines and protects both GET and POST routes for /api/goals
+router.route("/").get(protect, getGoals).post(protect, createGoal);
 
-// When a POST request comes to '/', use the createGoal controller.
-router.route("/").post(createGoal);
-
-module.exports = router;
+export default router;

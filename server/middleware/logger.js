@@ -6,4 +6,4 @@ const logger = (req, res, next) => {
   next(); // Pass the request to the next handler
 };
 
-module.exports = logger;
+export default logger;

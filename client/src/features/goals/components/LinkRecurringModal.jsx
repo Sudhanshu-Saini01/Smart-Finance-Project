@@ -1,38 +1,38 @@
-// client/src/features/goals/components/LinkCommitmentModal.jsx
+// client/src/features/goals/components/LinkRecurringModal.jsx
 
 import React, { useState, useContext, useMemo } from "react";
 import axios from "axios";
 import { DataContext } from "@/context/DataContext";
-import "./LinkCommitmentModal.css"; // We will create this file next.
+import "./LinkRecurringModal.css"; // We will create this file next.
 
 /**
- * @component LinkCommitmentModal
- * @desc      A modal that allows a user to link a new goal to an existing savings commitment.
+ * @component LinkRecurringModal
+ * @desc      A modal that allows a user to link a new goal to an existing savings recurring.
  * @param {boolean} isOpen - Controls if the modal is visible.
  * @param {function} onClose - Function to call to close the modal.
  * @param {object} goal - The newly created goal object that needs to be linked.
  */
-const LinkCommitmentModal = ({ isOpen, onClose, goal }) => {
+const LinkRecurringModal = ({ isOpen, onClose, goal }) => {
   // --- Context & State ---
-  const { commitments, refetchData } = useContext(DataContext);
-  // This state will hold the ID of the commitment the user selects from the dropdown.
-  const [selectedCommitmentId, setSelectedCommitmentId] = useState("");
+  const { recurrings, refetchData } = useContext(DataContext);
+  // This state will hold the ID of the recurring the user selects from the dropdown.
+  const [selectedRecurringId, setSelectedRecurringId] = useState("");
   const [error, setError] = useState("");
 
   // --- Data Processing ---
-  // This logic filters the user's commitments to find only the ones that are:
+  // This logic filters the user's recurrings to find only the ones that are:
   // 1. A "savings" type.
   // 2. Not already linked to another goal.
   // `useMemo` is used for performance so this list is only recalculated when necessary.
-  const availableCommitments = useMemo(() => {
-    return commitments.filter(
-      (c) => c.commitmentType === "savings" && !c.linkedGoal
+  const availableRecurrings = useMemo(() => {
+    return recurrings.filter(
+      (c) => c.recurringType === "savings" && !c.linkedGoal
     );
-  }, [commitments]);
+  }, [recurrings]);
 
   // --- Event Handlers ---
-  const handleLinkCommitment = async () => {
-    if (!selectedCommitmentId) {
+  const handleLinkRecurring = async () => {
+    if (!selectedRecurringId) {
       setError("Please select a savings plan to link.");
       return;
     }
@@ -40,16 +40,16 @@ const LinkCommitmentModal = ({ isOpen, onClose, goal }) => {
 
     try {
       // This makes an API call to a new endpoint that we will need to create on the server.
-      // It tells the server to update the specified commitment and set its `linkedGoal` field.
+      // It tells the server to update the specified recurring and set its `linkedGoal` field.
       await axios.put(
-        `http://localhost:3001/api/commitments/${selectedCommitmentId}/link-goal`,
+        `http://localhost:3001/api/recurrings/${selectedRecurringId}/link-goal`,
         { goalId: goal._id }
       );
       // After successfully linking, we refresh all app data and close the modal.
       await refetchData();
       onClose();
     } catch (err) {
-      console.error("Failed to link commitment", err);
+      console.error("Failed to link recurring", err);
       setError("Failed to link the savings plan. Please try again.");
     }
   };
@@ -68,22 +68,22 @@ const LinkCommitmentModal = ({ isOpen, onClose, goal }) => {
         </p>
 
         {/* If the user has no available savings plans, we show a helpful message. */}
-        {availableCommitments.length === 0 ? (
+        {availableRecurrings.length === 0 ? (
           <div className="empty-state">
             <p>You have no available savings plans to link.</p>
           </div>
         ) : (
           <div className="form-group">
-            <label htmlFor="commitment-select">Available Savings Plans</label>
+            <label htmlFor="recurring-select">Available Savings Plans</label>
             <select
-              id="commitment-select"
-              value={selectedCommitmentId}
-              onChange={(e) => setSelectedCommitmentId(e.target.value)}
+              id="recurring-select"
+              value={selectedRecurringId}
+              onChange={(e) => setSelectedRecurringId(e.target.value)}
             >
               <option value="">-- Select a Plan --</option>
-              {availableCommitments.map((c) => (
+              {availableRecurrings.map((c) => (
                 <option key={c._id} value={c._id}>
-                  {c.commitmentName} (
+                  {c.recurringName} (
                   {new Intl.NumberFormat("en-IN", {
                     style: "currency",
                     currency: "INR",
@@ -103,11 +103,9 @@ const LinkCommitmentModal = ({ isOpen, onClose, goal }) => {
           </button>
           {/* The "Link" button is disabled if no plan is selected or if none are available. */}
           <button
-            onClick={handleLinkCommitment}
+            onClick={handleLinkRecurring}
             className="btn-primary"
-            disabled={
-              !selectedCommitmentId || availableCommitments.length === 0
-            }
+            disabled={!selectedRecurringId || availableRecurrings.length === 0}
           >
             Link Savings Plan
           </button>
@@ -117,4 +115,4 @@ const LinkCommitmentModal = ({ isOpen, onClose, goal }) => {
   );
 };
 
-export default LinkCommitmentModal;
+export default LinkRecurringModal;

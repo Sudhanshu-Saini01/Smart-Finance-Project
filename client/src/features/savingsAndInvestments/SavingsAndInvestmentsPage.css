@@ -59,7 +59,7 @@
 }
 
 /*
-  This style is for the message that appears when there are no commitments.
+  This style is for the message that appears when there are no recurrings.
   It centers the text and gives it a clean, subtle appearance.
 */
 .empty-state {
@@ -77,7 +77,7 @@
 }
 
 /*
-  Note: The old `.commitments-list` and `.commitment-item` styles have been removed
+  Note: The old `.recurrings-list` and `.recurring-item` styles have been removed
   as they are replaced by the more advanced `.portfolio-grid` and the styles
   in `PortfolioItem.css`. This keeps the stylesheet clean and focused.
 */

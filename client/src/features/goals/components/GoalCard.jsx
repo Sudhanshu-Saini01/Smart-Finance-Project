@@ -7,31 +7,31 @@ import "./GoalCard.css"; // We will create this file next.
 /**
  * @component GoalCard
  * @desc      A smart card that displays a single financial goal, its progress,
- * and automatically calculates its estimated completion date based on linked commitments.
+ * and automatically calculates its estimated completion date based on linked recurrings.
  * @param {object} { goal } - The goal object to display.
  */
 const GoalCard = ({ goal }) => {
   // --- Context & State ---
-  // We access the global list of commitments to find the one linked to this goal.
-  const { commitments } = useContext(DataContext);
+  // We access the global list of recurrings to find the one linked to this goal.
+  const { recurrings } = useContext(DataContext);
 
   // --- Data Processing & Calculations ---
-  // `useMemo` is a performance hook. This logic runs only when the goal or commitments change.
-  const fundingCommitment = useMemo(() => {
-    // This finds the specific recurring savings commitment that is linked to this goal.
-    return commitments.find((c) => c.linkedGoal === goal._id);
-  }, [commitments, goal._id]);
+  // `useMemo` is a performance hook. This logic runs only when the goal or recurrings change.
+  const fundingRecurring = useMemo(() => {
+    // This finds the specific recurring savings recurring that is linked to this goal.
+    return recurrings.find((c) => c.linkedGoal === goal._id);
+  }, [recurrings, goal._id]);
 
   // This calculates the estimated number of months needed to reach the goal.
   const monthsToComplete = useMemo(() => {
-    if (!fundingCommitment || fundingCommitment.amount <= 0) {
+    if (!fundingRecurring || fundingRecurring.amount <= 0) {
       return null; // Return null if there's no funding or the amount is zero.
     }
     const remainingAmount = goal.targetAmount - goal.currentAmount;
     if (remainingAmount <= 0) return 0; // Goal is already complete.
     // The result is rounded up to ensure we account for the final partial month.
-    return Math.ceil(remainingAmount / fundingCommitment.amount);
-  }, [goal, fundingCommitment]);
+    return Math.ceil(remainingAmount / fundingRecurring.amount);
+  }, [goal, fundingRecurring]);
 
   // This calculates the estimated completion date.
   const completionDate = useMemo(() => {
@@ -80,15 +80,15 @@ const GoalCard = ({ goal }) => {
         </div>
         <div className="goal-card-details">
           {/* This section dynamically displays the funding information. */}
-          {fundingCommitment ? (
+          {fundingRecurring ? (
             <>
               <p>
                 <strong>Funding:</strong>{" "}
                 {new Intl.NumberFormat("en-IN", {
                   style: "currency",
                   currency: "INR",
-                }).format(fundingCommitment.amount)}{" "}
-                / {fundingCommitment.frequency}
+                }).format(fundingRecurring.amount)}{" "}
+                / {fundingRecurring.frequency}
               </p>
               {completionDate && (
                 <p>

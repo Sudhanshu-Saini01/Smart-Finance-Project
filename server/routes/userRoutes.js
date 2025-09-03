@@ -19,4 +19,4 @@ router.post("/login", loginUser);
 // The 'protect' middleware will run BEFORE getUserProfile
 router.get("/profile", protect, getUserProfile);
 
-module.exports = router;
+export default router;

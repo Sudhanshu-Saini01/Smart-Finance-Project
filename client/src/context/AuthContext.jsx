@@ -1,61 +1,64 @@
 // client/src/context/AuthContext.jsx
 
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import React, { createContext, useState, useEffect, useCallback } from "react";
+import api from "@/utils/api"; // Use our central, configured API client
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Manages initial app load
 
-  useEffect(() => {
-    if (token) {
-      // --- THIS IS THE FIX ---
-      // OLD WAY: axios.defaults.headers.common["x-auth-token"] = token;
-      // NEW WAY: We are now setting the 'Authorization' header in the "Bearer <token>" format.
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      // --- END OF FIX ---
-
-      axios
-        .get("http://localhost:3001/api/users/profile")
-        .then((response) => {
-          setUser(response.data);
-          setIsLoading(false);
-        })
-        .catch(() => {
-          logout();
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
+  // This function is now responsible for loading the user from a token
+  const loadUserFromToken = useCallback(async () => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      try {
+        const res = await api.get("/users/profile");
+        setUser(res.data); // Set the full user object, including their role
+      } catch (err) {
+        // If the token is invalid (e.g., expired), log the user out
+        localStorage.removeItem("token", err);
+        setToken(null);
+        setUser(null);
+      }
     }
-  }, [token]);
+    setIsLoading(false);
+  }, []);
 
-  const login = (newToken) => {
+  // This effect runs only once when the app starts
+  useEffect(() => {
+    loadUserFromToken();
+  }, [loadUserFromToken]);
+
+  // The new login function is smarter. It sets the token AND fetches the user data.
+  const login = async (newToken) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
+    // After setting the token, immediately fetch the user's profile
+    try {
+      const res = await api.get("/users/profile");
+      setUser(res.data);
+    } catch (err) {
+      console.error("Failed to fetch user profile after login", err);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
-    // --- IMPORTANT: Also delete the new Authorization header on logout ---
-    delete axios.defaults.headers.common["Authorization"];
   };
 
-  const contextValue = {
-    token,
-    user,
-    isLoading,
-    login,
-    logout,
-  };
+  // Provide the full user object to the rest of the app
+  const contextValue = { token, user, isLoading, login, logout };
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {/* Don't render children until the initial user load attempt is complete */}
+      {!isLoading && children}
+    </AuthContext.Provider>
   );
 };
 

@@ -1,7 +1,7 @@
 // server/models/User.js
 
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema(
       minlength: 4,
       select: false,
     },
+    // --- NEW: User Role for Authorization ---
+    role: {
+      type: String,
+      enum: ["user", "admin"], // Only allows these two values
+      default: "user", // New signups are always 'user' by default
+    },
+    // Note: monthlyIncome and savingsGoal might be better calculated fields
+    // rather than stored directly on the User model. We can refactor this later.
     monthlyIncome: {
       type: Number,
       default: 0,
@@ -37,32 +45,19 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// IMPORTANT: This method attaches the password-checking function to each user document.
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  // Use bcrypt to compare the plain text password from the login form
-  // with the hashed password stored in the database.
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// --- Middleware: Encrypt password using bcrypt ---
-// This middleware runs BEFORE a user document is saved.
 userSchema.pre("save", async function (next) {
-  // Only hash the password if it has been modified (or is new)
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
-
-  // Generate a salt and hash the password.
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
-
-// New 26.08.2025
-// --- Method: Match user entered password to hashed password in database ---
-userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;

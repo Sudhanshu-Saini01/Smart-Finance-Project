@@ -1,43 +1,33 @@
 // server/controllers/goalController.js
+import Goal from "../models/Goal.js";
 
-const Goal = require("../models/Goal");
-
-// @desc    Get all financial goals
-// @route   GET /api/goals
-// @access  Public (for now)
-const getGoals = async (req, res) => {
+/**
+ * @desc    Get all goals for the logged-in user
+ * @route   GET /api/goals
+ * @access  Private
+ */
+export const getGoals = async (req, res, next) => {
   try {
-    const goals = await Goal.find().sort({ createdAt: -1 });
+    // SECURITY FIX: Only find goals for the current user
+    const goals = await Goal.find({ user: req.user.id });
     res.json(goals);
   } catch (err) {
-    console.error("Error fetching goals:", err.message);
-    res.status(500).send("Server Error");
+    next(err);
   }
 };
 
-// @desc    Create a new financial goal
-// @route   POST /api/goals
-// @access  Public (for now)
-const createGoal = async (req, res) => {
+/**
+ * @desc    Create a new goal for the logged-in user
+ * @route   POST /api/goals
+ * @access  Private
+ */
+export const createGoal = async (req, res, next) => {
   try {
-    const newGoal = new Goal({
-      goalName: req.body.goalName,
-      targetAmount: req.body.targetAmount,
-      goalType: req.body.goalType,
-      priority: req.body.priority,
-      imageUrl: req.body.imageUrl,
-    });
-
+    // Create a new goal, automatically adding the logged-in user's ID
+    const newGoal = new Goal({ ...req.body, user: req.user.id });
     const goal = await newGoal.save();
     res.status(201).json(goal);
   } catch (err) {
-    console.error("Error creating goal:", err.message);
-    res.status(500).send("Server Error");
+    next(err);
   }
-};
-
-// Export the functions to be used in our routes
-module.exports = {
-  getGoals,
-  createGoal,
 };

@@ -7,10 +7,10 @@ const formatCurrency = (amount) =>
     amount
   );
 
-const FixedExpenseSummary = ({ commitments }) => {
+const FixedExpenseSummary = ({ recurrings }) => {
   const { totalMonthlyCost, upcomingBill } = useMemo(() => {
-    const fixedExpenses = commitments.filter(
-      (c) => c.commitmentType === "expense"
+    const fixedExpenses = recurrings.filter(
+      (c) => c.recurringType === "expense"
     );
     const totalMonthlyCost = fixedExpenses.reduce(
       (acc, c) => acc + c.amount,
@@ -22,7 +22,7 @@ const FixedExpenseSummary = ({ commitments }) => {
       .sort((a, b) => new Date(a.nextDueDate) - new Date(b.nextDueDate))[0];
 
     return { totalMonthlyCost, upcomingBill };
-  }, [commitments]);
+  }, [recurrings]);
 
   return (
     <div className="summary-grid">
@@ -36,9 +36,7 @@ const FixedExpenseSummary = ({ commitments }) => {
         <span className="stat-label">Next Upcoming Bill</span>
         {upcomingBill ? (
           <>
-            <strong className="stat-value">
-              {upcomingBill.commitmentName}
-            </strong>
+            <strong className="stat-value">{upcomingBill.recurringName}</strong>
             <span className="stat-subvalue">
               {new Date(upcomingBill.nextDueDate).toLocaleDateString()}
             </span>
