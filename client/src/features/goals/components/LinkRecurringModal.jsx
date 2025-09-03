@@ -42,7 +42,7 @@ const LinkRecurringModal = ({ isOpen, onClose, goal }) => {
       // This makes an API call to a new endpoint that we will need to create on the server.
       // It tells the server to update the specified recurring and set its `linkedGoal` field.
       await axios.put(
-        `http://localhost:3001/api/recurrings/${selectedRecurringId}/link-goal`,
+        `https://smart-finance-project.onrender.com/api/recurrings/${selectedRecurringId}/link-goal`,
         { goalId: goal._id }
       );
       // After successfully linking, we refresh all app data and close the modal.

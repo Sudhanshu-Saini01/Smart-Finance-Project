@@ -69,7 +69,7 @@ const GoalsPage = () => {
           formData.imageUrl ||
           "https://placehold.co/600x400/6c757d/FFF?text=My+Goal",
       };
-      const res = await axios.post("http://localhost:3001/api/goals", goalData);
+      const res = await axios.post("https://smart-finance-project.onrender.com/api/goals", goalData);
       const newGoal = res.data;
       await refetchData();
 

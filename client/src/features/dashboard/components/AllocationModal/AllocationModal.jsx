@@ -40,7 +40,7 @@ const AllocationModal = ({ isOpen, onClose, incomeTransaction, onApply }) => {
   const handleApply = async () => {
     try {
       // Send the new ratio to the new backend endpoint
-      await axios.post("http://localhost:3001/api/transactions/allocate", {
+      await axios.post("https://smart-finance-project.onrender.com/api/transactions/allocate", {
         incomeId: incomeTransaction._id,
         allocations: {
           savings,
