@@ -4,7 +4,7 @@
 
 // // Create a new Axios instance with a base URL for our server
 // const api = axios.create({
-//   baseURL: "http://localhost:3001/api",
+//   baseURL: "http://smart-finance-project.onrender.com/api",
 // });
 
 // // This is an "interceptor" — a function that runs BEFORE every request is sent.
@@ -36,7 +36,7 @@ import axios from "axios";
 // Create a new Axios instance with a base URL for our server.
 // This is the single, authoritative API client for the entire application.
 const api = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "http://smart-finance-project.onrender.com/api",
 });
 
 // Use an "interceptor" to run a function before every single request is sent.

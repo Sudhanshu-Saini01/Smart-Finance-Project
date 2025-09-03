@@ -16114,7 +16114,7 @@ const {
     S.useEffect(() => {
       t
         ? ((He.defaults.headers.common.Authorization = `Bearer ${t}`),
-          He.get("http://localhost:3001/api/users/profile")
+          He.get("https://smart-finance-project.onrender.com/api/users/profile")
             .then((h) => {
               l(h.data), s(!1);
             })
@@ -16135,7 +16135,7 @@ const {
       d = { token: t, user: r, isLoading: o, login: f, logout: m };
     return y.jsx(Dl.Provider, { value: d, children: e });
   },
-  an = He.create({ baseURL: "http://localhost:3001/api" });
+  an = He.create({ baseURL: "https://smart-finance-project.onrender.com/api" });
 an.interceptors.request.use(
   (e) => {
     const t = localStorage.getItem("token");
@@ -16164,14 +16164,14 @@ const Ut = S.createContext(),
         T(!0);
         try {
           const [V, J, ue, ee, te, me, be, pe] = await Promise.all([
-            an.get("http://localhost:3001/api/users/profile"),
-            an.get("http://localhost:3001/api/transactions/monthly-summary"),
-            an.get("http://localhost:3001/api/transactions"),
-            an.get("http://localhost:3001/api/goals"),
-            an.get("http://localhost:3001/api/loans"),
-            an.get("http://localhost:3001/api/investments"),
-            an.get("http://localhost:3001/api/recurrings"),
-            an.get("http://localhost:3001/api/income-sources"),
+            an.get("https://smart-finance-project.onrender.com/api/users/profile"),
+            an.get("https://smart-finance-project.onrender.com/api/transactions/monthly-summary"),
+            an.get("https://smart-finance-project.onrender.com/api/transactions"),
+            an.get("https://smart-finance-project.onrender.com/api/goals"),
+            an.get("https://smart-finance-project.onrender.com/api/loans"),
+            an.get("https://smart-finance-project.onrender.com/api/investments"),
+            an.get("https://smart-finance-project.onrender.com/api/recurrings"),
+            an.get("https://smart-finance-project.onrender.com/api/income-sources"),
           ]);
           r(V.data),
             o(J.data),
@@ -17007,7 +17007,7 @@ const Ut = S.createContext(),
       d = async (h) => {
         h.preventDefault(), o(""), f(!0);
         try {
-          const p = await He.post("http://localhost:3001/api/users/login", {
+          const p = await He.post("https://smart-finance-project.onrender.com/api/users/login", {
             email: e,
             password: n,
           });
@@ -17092,7 +17092,7 @@ const Ut = S.createContext(),
       h = async (p) => {
         p.preventDefault(), f(""), d("");
         try {
-          await He.post("http://localhost:3001/api/users/signup", {
+          await He.post("https://smart-finance-project.onrender.com/api/users/signup", {
             name: e,
             email: n,
             password: l,
@@ -39766,7 +39766,7 @@ const QY = (e) => {
         }
         m("");
         try {
-          await He.put(`http://localhost:3001/api/recurrings/${o}/link-goal`, {
+          await He.put(`https://smart-finance-project.onrender.com/api/recurrings/${o}/link-goal`, {
             goalId: n._id,
           }),
             await l(),
@@ -39955,7 +39955,7 @@ const QY = (e) => {
                 E.imageUrl ||
                 "https://placehold.co/600x400/6c757d/FFF?text=My+Goal",
             },
-            R = (await He.post("http://localhost:3001/api/goals", C)).data;
+            R = (await He.post("https://smart-finance-project.onrender.com/api/goals", C)).data;
           await r(), b(R), h(!0);
         } catch (C) {
           console.error("Failed to create goal", C),
