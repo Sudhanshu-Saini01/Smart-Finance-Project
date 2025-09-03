@@ -221,7 +221,7 @@
 // client/src/components/Navbar.jsx
 
 // --- Core Imports ---
-import React, { useState, useContext } from "react"; // Added useState
+import React, { useState, useContext, useEffect, useRef } from "react"; // Added useState
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 
@@ -238,19 +238,36 @@ import {
   ShoppingBag,
   LogOut,
   ChevronDown, // New icon for the dropdown button
+  UserCircle2,
 } from "lucide-react";
 
 // --- Stylesheet Import ---
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   // State to manage the visibility of the dropdown menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
-  // Function to toggle the menu's visibility
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  // // Function to toggle the menu's visibility
+  // const toggleMenu = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuRef]);
+
+  // A helper to close the dropdown when a link is clicked
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -287,41 +304,53 @@ const Navbar = () => {
         </li>
 
         {/* ---- "MORE" DROPDOWN MENU ---- */}
-        <li className="navbar-menu-container">
+        {/* <li className="navbar-menu-container">
           <button onClick={toggleMenu} className="navbar-menu-button">
             <span>More</span>
             <ChevronDown size={16} />
+          </button> */}
+
+        <li className="navbar-menu-container" ref={menuRef}>
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="navbar-menu-button"
+          >
+            <span>More</span>
+            <ChevronDown
+              size={16}
+              className={`chevron-icon ${isMenuOpen ? "open" : ""}`}
+            />
           </button>
 
           {/* Conditionally render the dropdown menu if isMenuOpen is true */}
           {isMenuOpen && (
             <ul className="dropdown-menu">
               <li>
-                <NavLink to="/fixedExpenses">
+                <NavLink to="/fixedExpenses" onClick={handleLinkClick}>
                   <GanttChartSquare size={18} />
                   <span>Fixed Expenses</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/variableExpenses">
+                <NavLink to="/variableExpenses" onClick={handleLinkClick}>
                   <ShoppingBag size={18} />
                   <span>Variable Expenses</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/savings">
+                <NavLink to="/savings" onClick={handleLinkClick}>
                   <PiggyBank size={18} />
                   <span>Savings</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/loans">
+                <NavLink to="/loans" onClick={handleLinkClick}>
                   <Landmark size={18} />
                   <span>Loans</span>
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/insurance">
+                <NavLink to="/insurance" onClick={handleLinkClick}>
                   <ShieldCheck size={18} />
                   <span>Insurance</span>
                 </NavLink>
@@ -331,10 +360,17 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <button onClick={logout} className="navbar-logout">
-        <LogOut size={16} />
-        <span>Logout</span>
-      </button>
+      {/* --- 2. UPDATED USER ACTIONS SECTION --- */}
+      <div className="navbar-user-actions">
+        <NavLink to="/profile" className="navbar-profile-link" title="Profile">
+          <UserCircle2 size={22} />
+          <span>{user?.name}</span>
+        </NavLink>
+        <button onClick={logout} className="navbar-logout" title="Logout">
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
+      </div>
     </nav>
   );
 };

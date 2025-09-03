@@ -12,7 +12,7 @@ import connectDB from "./config/db.js";
 import allRoutes from "./routes/index.js";
 import logger from "./middleware/logger.js";
 // We should add a global error handler for a truly professional app
-// import errorHandler from './middleware/errorHandler.js';
+import errorHandler from "./middleware/errorHandler.js";
 
 // --- Initialization ---
 dotenv.config();
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Global error handler should be the last piece of middleware
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // --- Server Startup ---
 app.listen(PORT, () => {

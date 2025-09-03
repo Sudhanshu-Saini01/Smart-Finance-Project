@@ -142,3 +142,28 @@
 .dropdown-menu li a.active::after {
   display: none;
 }
+
+/* Add to the end of Navbar.css */
+.navbar-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.navbar-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+.navbar-profile-link:hover {
+  background-color: #f3f4f6;
+}
+.navbar-profile-link.active {
+  color: #4f46e5;
+  background-color: #eef2ff;
+}
